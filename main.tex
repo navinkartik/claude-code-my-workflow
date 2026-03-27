@@ -1,0 +1,1134 @@
+\documentclass[12 pt]{article}
+\usepackage{bbm}
+\usepackage[longnamesfirst]{natbib}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{setspace}
+\usepackage[colorlinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{enumitem}
+\setlist{noitemsep,parsep=6pt,partopsep=0pt,topsep=0pt}
+\usepackage[margin=1in]{geometry}
+\usepackage{verbatim}
+\usepackage{sectsty}
+\usepackage[svgnames]{xcolor}
+\usepackage{subfiles}
+\usepackage{xargs}
+\usepackage[titletoc,title]{appendix}
+\usepackage{titlesec}
+\usepackage[bottom]{footmisc}
+\usepackage[multiple]{fnpct}
+\usepackage[colorinlistoftodos,textsize=tiny]{todonotes}
+\usepackage[capitalize,nameinlink]{cleveref}
+\usepackage[normalem]{ulem}
+\usepackage[font={small,it},justification=justified]{caption}
+\usepackage{tablefootnote}
+\usepackage{threeparttable}
+\usepackage{afterpage}
+\usepackage{xparse}
+\hypersetup{
+    pdftitle={How Wasteful is Signaling?},
+    pdfauthor={Alex Frankel and Navin Kartik},
+    citecolor=DarkBlue,
+    bookmarksnumbered=true,
+    urlcolor=Indigo,
+    linkcolor=DarkBlue,
+}
+\usepackage{subcaption}
+\captionsetup{font=small,labelfont={bf}}
+\usepackage{xspace}
+\usepackage{booktabs}
+
+\newcommand{\marker}{\hfill\textsquare}
+\renewcommand{\qedsymbol}{\textsquare}
+\iffalse
+\newenvironment{proof}[1][Proof]{\noindent\textbf{#1} }{\ \rule{0.5em}{0.5em}}
+\fi
+\renewcommand{\epsilon}{\varepsilon}
+%\setcounter{page}{0}
+
+
+\def\sectionautorefname{Section}
+\def\subsectionautorefname{Subsection}
+\def\subsubsectionautorefname{Subsection}
+\def\lemmaautorefname{Lemma}
+%\def\lemautorefname{Lemma}
+\def\propositionautorefname{Proposition}
+%\def\propautorefname{Proposition}
+\def\exampleautorefname{Example}
+\def\definitionautorefname{Definition}
+\def\factautorefname{Fact}
+\def\footnoteautorefname{fn.}
+\def\remarkautorefname{Remark}
+\def\assumptionautorefname{Assumption}
+\def\asmautorefname{Assumption}
+\def\corollaryautorefname{Corollary}
+\def\figureautorefname{Figure}
+\def\observationautorefname{Observation}
+\def\claimautorefname{Claim}
+\def\conditionautorefname{Condition}
+\def\appendixautorefname{Appendix}
+\newcommand{\appendixref}[1]{\hyperref[#1]{Appendix \ref{#1}}}
+\newcommand{\onlineappendixref}[1]{\hyperref[#1]{Supplementary Appendix \ref{#1}}}
+
+%%%%%%%%%%%%%%
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{proposition}{Proposition}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{corollary}{Corollary}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+\newtheorem{condition}{Condition}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\newtheorem{fact}{Fact}
+
+\theoremstyle{definition}
+\newtheorem{example}{Example}
+\makeatletter
+\AtBeginEnvironment{example}{%
+  \pushQED{\qed}%
+  \renewcommand{\qedsymbol}{$\diamond$}%
+}
+\AtEndEnvironment{example}{%
+  \popQED
+}
+\makeatother
+
+\newtheorem{definition}{Definition}
+%%%%%%%%%%%%
+\NewDocumentCommand{\citepos}{sm}{%
+  \IfBooleanTF{#1}
+    {\citeauthor*{#2}'s~\citeyearpar{#2}}  % starred version - all authors
+    {\citeauthor{#2}'s~\citeyearpar{#2}}   % normal version - et al.
+}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Rpos}{\R_{\geq0}}
+\newcommand{\Rstrpos}{\R_{>0}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Zpos}{\Z_{\geq0}}
+\newcommand{\Zstrpos}{\Z_{>0}}
+\newcommand{\N}{\Zstrpos}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\indic}{\mathbbm{1}}
+\def\Reals{\mathbb R}
+\newcommand{\e}{\varepsilon}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator*{\argmax}{\arg\max}
+\DeclareMathOperator{\cl}{cl}
+\DeclareMathOperator{\sign}{sign}
+\newcommand{\notimplies}{\;\not\!\!\!\implies}
+
+\def\typemin{0}
+\def\typemax{\overline \theta}
+\newcommand{\elaB}{\tilde\beta}   % type-dependent benefit elasticity
+\newcommand{\elaS}{\tilde\sigma}  % type-dependent strain elasticity
+\newcommand{\elaR}{\tilde\rho}    % type-dependent ratio of benefit to strain elasticities
+
+
+\newcommand{\redt}[1]{\textcolor{red}{#1}}
+\newcommand{\bluet}[1]{\textcolor{blue}{#1}}
+\newcommand{\navin}[1]{\textcolor{violet}{ [NK: \textit{#1}] }}
+\newcommand{\alex}[1]{\textcolor{blue}{ [AF: \textit{#1}] }}
+
+\usetikzlibrary{patterns, decorations.pathreplacing, positioning, arrows.meta,calc,decorations.pathreplacing,calligraphy,shapes.geometric,decorations.markings}
+
+%%% This gets the period after Section labels in the Table of Contents
+\let \savenumberline \numberline
+\def \numberline#1{\savenumberline{#1.}}
+%%%
+
+%%%%%%%%%%%%
+\makeatletter
+  \renewcommand\@seccntformat[1]{\csname the#1\endcsname.{\hskip.7em\relax}} %Gets period after section title
+\makeatother
+%%%%%%%%%%%%
+%%% Next bit gets the proof environment to show "proof" in bold rather than italics
+\makeatletter
+\renewenvironment{proof}[1][\proofname] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse}
+\makeatother
+%%%
+
+\newcommand{\mailto}[1]{\href{mailto:#1}{\texttt{#1}}} %creates an email command
+
+\newcommand{\suppapp}[1]{\hyperref[#1]{Supplementary Appendix}}
+
+%% Next bit adds space between footnote number and text
+\let\oldfootnote\footnote
+\renewcommand\footnote[1]{\oldfootnote{\hspace{.5mm}#1}}
+%%
+
+\setlength{\parskip}{6pt plus 1pt minus 1pt} %sets space between paragraphs
+\setlength{\footnotesep}{0.17in} %Sets space between footnotes on same page
+
+\titlespacing\section{0pt}{10pt plus 2pt minus 2pt}{4pt plus 2pt minus 2pt} %Tightens up spacing after section title
+\titlespacing\subsection{0pt}{6pt plus 2pt minus 2pt}{2pt plus 2pt minus 2pt} %Tightens up spacing after subsection titile
+\titlespacing\subsubsection{0pt}{6pt plus 2pt minus 2pt}{0pt plus 2pt minus 2pt} 
+\titlespacing{\paragraph}{0pt}{0.5\baselineskip}{1em}
+
+\setlength{\jot}{6pt} %sets space between equations in align environment
+
+\newcommand\solidrule[1][0.5cm]{\rule[0.6ex]{#1}{.4pt}}
+\newcommand\dashedrule{\mbox{%
+  \solidrule[1mm]\hspace{1mm}\solidrule[1mm]\hspace{1mm}\solidrule[1mm]}}
+
+\newcommand{\appendixlink}{\hyperref[sec:appendix]{Appendix}}
+\newcommand{\secref}[1]{\S\ref{#1}}
+
+\usepackage{xcolor}
+
+\sectionfont{\color{DarkRed}}
+\subsectionfont{\color{DarkRed}}
+\subsubsectionfont{\color{DarkRed}}
+
+
+\setlength{\marginparwidth}{2cm}
+\setstretch{1.26}
+
+\begin{document}
+
+\title{How Wasteful is Signaling?\thanks{We thank Nageeb Ali, Emir Kamenica, Hongcheng Li, Elliot Lipnowski, George Mailath, Benny Moldovanu, Georg N{\"o}ldeke, Andrea Prat, \href{https://www.refine.ink}{Refine.ink}, Larry Samuelson, and Joel Sobel for helpful comments.}}
+
+\author{Alex Frankel\thanks{University of Chicago, Booth School of Business; Email: \mailto{afrankel@chicagobooth.edu}.} \and Navin Kartik\thanks{Yale University, Department of Economics; Email: \mailto{nkartik@gmail.com}.}}
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+\noindent
+Signaling is wasteful. But how wasteful? We study the fraction of surplus dissipated in a separating equilibrium. For isoelastic environments, this waste ratio has a simple formula: $\beta/(\beta+\sigma)$, where $\beta$ is the benefit elasticity (reward to higher perception) and $\sigma$ is the elasticity of higher types' relative cost advantage. The ratio is constant across types and independent of other parameters, including convexity of cost in the signal. %A constant waste ratio characterizes the isoelastic class. %In winner-take-all signaling tournaments with $N$ candidates, exactly $(N-1)/N$ of the surplus dissipates---the same as in Tullock contests.
+We show that the directional effects of $\beta$ and $\sigma$ on waste extend to non-isoelastic environments.
+\end{abstract}
+
+\newpage
+\setcounter{page}{1}
+
+\section{Introduction}
+\label{sec:intro}
+
+
+Signaling is wasteful. In the canonical \citet{Spence73} model and its innumerable applications and descendants, agents take costly actions to distinguish themselves from lower types. The resulting separating equilibrium reveals information but necessarily dissipates surplus---a fundamental source of inefficiency under asymmetric information.\footnote{\label{fn:productive}Of course, signaling activities can also generate benefits: education builds human capital; and prosocial behavior brings positive externalities, which signaling can amplify \citep{BT06}. Our paper  focuses on the wasteful component of signaling.} 
+
+But how wasteful is signaling, and what does the %wastefulness 
+waste
+depend on? %Despite more than 50 years of research, t
+%The literature offers no simple answer.
+Despite more than 50 years of research, these basic questions have received limited attention and the literature does not offer simple answers.
+
+A natural intuition suggests that the magnitude of waste should depend on the \emph{difficulty} of signaling. If signaling costs are highly convex in the action (a ``hard'' test), agents encounter high marginal costs quickly, which ought to limit total expenditure. This reasoning suggests that policies that make signaling more difficult---via exam difficulty, advertising costs, or certification requirements---could reduce waste. However, notice that while such policies reduce the level of signaling, they also increase the cost of lower signals.
+
+Reducing signaling \emph{stakes} instead---scaling down the benefits of being thought of as a higher type---also reduces the level of signaling, and does indeed reduce signaling costs. But it also lowers signaling benefits. For both difficulty and stakes, then, what is the overall effect on the \emph{waste ratio}, i.e., the proportion of private surplus burned through signaling?
+
+Our paper studies the classic continuum-type signaling model used in economics, presented formally in \autoref{sec:model}, and focuses on the essentially unique separating equilibrium. Our main result, \autoref{thm:constant} in \autoref{sec:results}, has two parts. First, under a standard multiplicative cost structure, the proportion of surplus burned by a given type---the waste ratio---is invariant to both difficulty and stakes. Importantly, difficulty captures not just the scale of costs, but also the shape (convexity).
+
+
+Second, consider a canonical isoelastic class of costs and benefits: the cost for type $\theta$ of taking signaling action $a$ is given by $C(a,\theta)=D(a) \theta^{-\sigma}$, while the benefit of being thought of as type $\hat \theta$ is $V(\hat \theta) = s \hat \theta^\beta$. Here, $\beta>0$ is the elasticity of benefits (how steeply rewards rise with perceived type),  $\sigma>0$ is the elasticity of cost ``strain'' (how quickly higher types' comparative advantage grows), and $D(\cdot)$ and $s>0$ are the difficulty and stakes respectively. Under such isoelasticity, we find that the waste ratio for all types is the constant 
+\[
+W = \frac{\beta}{\beta + \sigma}.
+\]
+Waste thus depends only on $\beta/\sigma$, increasing from zero to one in that fraction. This constant waste ratio avoids issues of aggregation across types and delivers a simple answer to our motivating question. 
+
+We then show in \autoref{thm:char} that (under multiplicative costs) waste is constant across types {if and only if} the costs and benefits satisfy a constant relative elasticity condition. Hence, up to the labeling of types, the isoelastic class is the unique setting for such uniform dissipation. This characterization provides a theoretical foundation for the isoelastic specification. 
+
+\autoref{prop:comp_stat} establishes comparative statics beyond the isoelastic specification: when benefit and cost strain elasticities are type dependent, a pointwise increase in the benefit elasticity and pointwise decrease in the strain elasticity imply a higher waste at every type. This generalizes the directional effects of $\beta$ and $\sigma$ seen in the isoelastic case's constant waste formula.
+
+
+% In \autoref{sec:tournament}, we apply the constant waste formula to signaling in tournaments. Under suitable assumptions, a winner-take-all market with $N$ candidates competing for a prize has benefit elasticity $\beta = N-1$ (from the prize structure) and strain elasticity $\sigma=1$ (a cost normalization), yielding a waste ratio of $(N-1)/N$. Thus, the fraction of surplus burned increases in $N$, converging to full dissipation as $N \to \infty$. The $(N-1)/N$ formula is precisely the rent dissipation rate in symmetric Tullock lottery contests, revealing a %n unexpected 
+% connection between signaling and contest theory.
+
+% In \autoref{sec:welfare}, we use the isoelastic specification to discuss how our waste ratio, which only factors in agents' private benefits from signaling, relates to the social value of information. The conclusion, \autoref{sec:conclusion}, discusses implications, interpretations, and limitations.
+
+In \autoref{sec:welfare}, we extend the isoelastic specification to discuss how the waste ratio, which only factors in agents’ private benefits from signaling, relates to the social value of information. Specifically, we assume that agents are workers in a competitive labor market. Firms hire workers and then make productive investments complementary to agent types. We compare the separating equilibrium to a pooling equilibrium, which has less efficient investments but no signal costs. We find that the efficiency benefits of separation outweigh the signaling costs when the type distribution is sufficiently spread out.
+
+In \autoref{sec:tournament}, we apply the constant waste formula to signaling in tournaments. Under suitable assumptions, a winner-take-all market with $N$ candidates competing for a prize has benefit elasticity $\beta = N-1$ (from the prize structure) and strain elasticity $\sigma=1$ (a cost normalization), yielding a waste ratio of $(N-1)/N$. Thus, the fraction of surplus burned increases in $N$, converging to full dissipation as $N \to \infty$. The $(N-1)/N$ formula is precisely the rent dissipation rate in symmetric Tullock lottery contests, revealing an unexpected connection between signaling and contest theory.
+
+The conclusion, \autoref{sec:conclusion}, discusses implications, interpretations, and limitations.
+
+\paragraph{Related Literature.} The costly signaling literature in economics, surveyed by \citet{Riley01} and \citet{Sobel09}, emphasizes the conditions for separating equilibria and 
+that information revelation entails surplus dissipation. 
+However, we are aware of virtually no work that systematically analyzes this waste. One exception is \citet{BBC23}, who show that dissipation can vanish when agents have heterogeneous bliss points and choose many actions (or, equivalently, costs are scaled up). Our paper instead quantifies waste in the canonical signaling setting with homogeneous bliss points and non-negligible distortions. 
+
+
+In the biological signaling literature, \citet{NoldekeSamuelson99} show that offspring's equilibrium cost is proportional to parents' fitness loss, with a constant depending only on genetic relatedness. Their analysis does not yield a constant waste ratio (cost relative to sender's benefit, which need not track parental loss), and their assumption of a linear cost precludes questions about signaling difficulty. But our paper shares with them a common theme that given some structure, dissipation can admit a simple formula based on primitive parameters, with certain invariance properties. By contrast, \citet{BSL02} point out that without structure, little can be said about the equilibrium level of signaling costs.
+
+We discuss some other literature connections later in the paper.
+
+\section{Model}
+\label{sec:model}
+
+An agent has type $\theta\in \Theta:=[\typemin,\typemax\rangle$, where $0<\typemax \leq \infty$.\footnote{We use the notation $[\typemin,x\rangle$ to mean $[\typemin,x]$ if $x<\infty$ and $[0,\infty)$ if $x=\infty$.}  The type is drawn from a continuous cumulative distribution $F$ with support $\Theta$. After privately learning his type, the agent chooses a publicly observable signal or action $a \in \Rpos$. An observer sees the action and forms her belief $\hat \theta \in \Theta$ about the agent's type.\footnote{As we will focus on separating equilibria, we only need to consider degenerate beliefs on a single type.} The agent's payoff is $
+V(\hat\theta) - C(a, \theta)$. We maintain throughout the following assumption (primes and subscripts on functions denote derivatives in the usual manner).
+
+\begin{assumption}The benefit function $V: \Theta \to \Rpos$ and cost function $C: \Rpos \times \Theta \to \Rpos \cup \{\infty\}$ respectively satisfy:
+\label{ass:basics}
+\begin{enumerate}
+\item \label{ass:V} $V$ is twice %continuously 
+differentiable, with $V(\typemin) = 0$ and $V'(\theta) > 0$ for all $\theta > \typemin$.
+\item \label{ass:C} On $\Rpos \times (\typemin,\typemax\rangle$, $C$ is finite and continuous with $C(0,\theta)=0$; on $\Rstrpos \times (\typemin,\typemax\rangle$, $C$ is %continuously 
+differentiable with $C_a>0$, and $C_a$ is continuously differentiable with $C_{a\theta} < 0$. The lowest type has cost $C(a,\typemin)=\lim_{\theta \downarrow \typemin} C(a, \theta)$ for all $a$.
+\end{enumerate}
+\end{assumption}
+
+
+Part \ref{ass:V} of \autoref{ass:basics} says that agents prefer to be perceived as higher types, with the benefit from the lowest perception normalized to zero. Part \ref{ass:C} says that higher actions are costlier, %costs are convex in the action; 
+and higher types have lower marginal costs. While it would be natural for costs to be convex in the action, we don't need to assume that. Part \ref{ass:C} also normalizes $C(0,\theta) = 0$ for all $\theta$, so that the payoff from taking the lowest action and receiving the lowest perception is zero. The technical conditions in the two parts are largely standard; note that we allow for type $\typemin$ to have infinite costs for actions $a>0$ to encompass canonical isoelastic costs, detailed in \autoref{sec:results}.
+
+\paragraph{Equilibrium.} We study (fully-)\emph{separating equilibria}. The equilibrium definition is standard and relegated to \appendixref{sec:separating}, where \autoref{prop:separating-differentiable} shows that any separating equilibrium can be described by a continuous, strictly increasing agent (pure) strategy $A: \Theta \to \Rpos$ that is differentiable for $\theta>0$ and satisfies $A(\typemin) = 0$.  Incentive compatibility requires that each type $\theta$ optimally chooses $A(\theta)$ given that the observer correctly inverts the strategy on the equilibrium path, i.e., when beliefs satisfy $\hat\theta(a) = A^{-1}(a)$ for $a \in [0, A(\typemax)\rangle$. Off-path beliefs can simply be set to $\hat \theta(\cdot)=\typemin$. 
+
+Thus, in a separating equilibrium $A$, any type $\theta$ solves
+\[
+\max_a \; [V(\hat\theta(a)) - C(a, \theta)],
+\]
+where $\hat \theta(\cdot)=A^{-1}(\cdot)$. 
+For $\theta>0$, the first-order condition  evaluated at the optimal action $A(\theta)$ is
+\begin{equation}\label{e:foc}
+C_a(A(\theta), \theta) = V'(\theta) \cdot \hat\theta'(A(\theta)) = \frac{V'(\theta)}{A'(\theta)},
+\end{equation}
+where the first equality uses $\hat \theta(A(\theta))=\theta$ and the second uses $\hat\theta'(A(\theta)) = 1/A'(\theta)$.
+
+\autoref{e:foc} has a simple interpretation. Its left-hand side is the marginal cost of increasing the action; the right-hand side is the marginal benefit of inducing a higher belief scaled by the marginal increase in action required for that higher belief. Together with $A(\typemin) = 0$, \autoref{e:foc} defines a boundary-value differential equation in $A$. There is a unique solution by standard arguments.\footnote{More precisely, standard existence and uniqueness results for ordinary differential equations can be applied on $(\typemin,\typemax\rangle$ and extended to the lower boundary by continuity; see the arguments in, for example, \citet{Mailath87} or \citet{Kartik09}.} That solution, which we continue to refer to as just $A$ subsequently, characterizes the unique separating equilibrium (uniqueness is up to the specification of off-path beliefs); sufficiency is verified by \autoref{prop:sufficiency} in \autoref{sec:separating}.
+
+\paragraph{The Waste Ratio.} To measure signaling inefficiency we define three quantities. The {opt-out} payoff $U^{O}(\theta):=V(\typemin)-C(0,\theta)=0$ is what a type would get if it chose the least-cost action and was perceived as the lowest type. The {complete-information} payoff $U^{CI}(\theta):=V(\theta)-C(0,\theta)=V(\theta)$ is what a type would get if it revealed itself costlessly. Lastly, $U(\theta):=V(\theta) - C(A(\theta), \theta)$ is a type's separating {equilibrium payoff}.
+
+\begin{definition}
+\label{def:waste}
+The \emph{waste ratio} for type $\theta>0$ is the fraction of its payoff from costless separation that is dissipated through costly signaling:%\footnote{The waste ratio for the lowest type $\theta=0$ is ill-defined.}
+\begin{equation}
+\label{e:waste}    
+W(\theta) := \frac{U^{CI}(\theta) - U(\theta)}{U^{CI}(\theta) - U^O(\theta)} = \frac{C(A(\theta), \theta)}{V(\theta)}.
+\end{equation}
+\end{definition}
+
+We refer to the denominator $V(\theta)$ as \emph{surplus}: it is the payoff that type $\theta$ would hypothetically get by verifying her type at zero cost. The numerator $C(A(\theta), \theta)$ is the deadweight loss from signaling. The ratio $W(\theta)$ thus measures the effective ``tax'' that the separating equilibrium imposes on the agent to secure his surplus.
+
+Note that our definition of waste compares the agent's cost of information revelation relative to a frictionless benchmark in which information is revealed at no private cost. This benchmark is, of course, unachievable. Relatedly, we are not defining waste relative to a pooling equilibrium or any other equilibrium. Waste is also only defined in terms of the agent's private surplus, not necessarily social surplus from  information. %\footnote{We discuss pooling equilibria and social surplus in the extension of \autoref{sec:welfare}.}
+We discuss social surplus and pooling equilibria in \autoref{sec:welfare}.
+
+
+Our goal is to understand how the waste ratio \eqref{e:waste} depends on the parameters of the signaling environment.\footnote{The waste ratio can be viewed as analogous to the ``Price of Anarchy'' in algorithmic game theory \citep{KP99, Roughgarden05}. That literature generally studies worst-case bounds across multiple equilibria; we are interested in the exact value in the separating equilibrium. Furthermore, we define waste pointwise across types, whereas Bayesian Price of Anarchy typically uses ex-ante expected payoffs \citep{RST17}. A consequence of our results is that the latter distinction is rendered moot in \hyperref[def:isoelastic]{isoelastic environments}.}
+
+
+
+\section{Signaling's Waste}
+\label{sec:results}
+
+We hereafter focus on multiplicatively separable costs that are commonplace in signaling models. Formally, we assume that
+\begin{equation}\label{e:multsep}
+C(a, \theta) = D(a) \cdot S(\theta),
+\end{equation}
+where $D: \Rpos \to \Rpos$ and $S:\Theta \to \Rstrpos \cup \{\infty\}$. Here $D(a)$ represents the \emph{difficulty} of action $a$ (relative to other actions) and $S(\theta)$ represents the \emph{strain} experienced by type $\theta$ (relative to other types). \autoref{ass:basics} part \ref{ass:C} implies (i) $D(0) = 0$ and $D'(a) > 0$ for $a > 0$; and (ii) for $\theta>0$, we have $S(\theta)$ finite and $S'(\theta)<0$, while $S(0)=\lim_{\theta\downarrow 0}S(\theta)$. Note that $S(0) = \infty$ corresponds to type $0$ facing prohibitive signaling costs for any $a>0$.\footnote{But $C(0,0)=D(0)S(0)=0$, using the convention $0\times \infty =0$.} 
+
+
+It is also useful to write, without loss, $$V(\theta)= s\cdot B(\theta),$$ where $s>0$ represents the agent's \emph{stakes} in signaling and $B:\Theta\to \Rpos$.
+
+
+We define, for $\theta>0$, the \emph{benefit elasticity}
+\[
+\elaB(\theta) := \frac{d\ln V(\theta)}{d\ln\theta} = \frac{d\ln B(\theta)}{d\ln\theta} = \theta\frac{B'(\theta)}{B(\theta)}>0,
+\]
+and, for multiplicatively-separable costs, the \emph{strain elasticity} %$\elaS(\theta)$
+\[
+\elaS(\theta) := -\frac{\partial\ln C(a,\theta)}{\partial\ln\theta} = -\frac{d\ln S(\theta)}{d\ln\theta} = -\theta\frac{S'(\theta)}{S(\theta)}>0.
+\]
+This pair of elasticity functions characterize an environment under multiplicative costs: given $\elaB$ and $\elaS$, one can recover $B$ and $S$ up to normalization constants. 
+Let $\elaR(\theta):=\elaB(\theta)/\elaS(\theta)$ denote the ratio of benefit-to-strain elasticities.
+
+
+\subsection{The Constant of Dissipation}
+\label{subsec:constant}
+
+A leading parametric specification is that of isoelastic costs and benefits:
+
+\begin{definition}
+\label{def:isoelastic}
+An \emph{isoelastic environment} is defined by
+\[
+B(\theta) = \theta^\beta \quad \text{and} \quad S(\theta) = \theta^{-\sigma},
+\]
+for some %type-independent \emph{benefit elasticity} $\beta > 0$ and \emph{strain elasticity} $\sigma > 0$.
+constant {benefit elasticity} $\beta > 0$ and constant {strain elasticity} $\sigma > 0$. The corresponding ratio of elasticities is $\rho = \beta / \sigma$.
+\end{definition}
+
+Note that the definition stipulates isoelasticity in $B$ and $S$, but not in difficulty $D$. Our first result says that multiplicative costs ensure the waste ratio is independent of stakes and difficulty, and isoelasticity further implies a constant waste ratio across types.
+
+
+\begin{theorem}
+\label{thm:constant}
+Under multiplicative costs:
+\begin{enumerate}
+\item \label{invariance} The waste ratio $W(\theta)$ is invariant to stakes ($s$) and difficulty ($D(\cdot)$).
+\item \label{constant} In an isoelastic environment, the waste ratio is constant: for any $\theta>0$, it is
+\begin{equation}
+\label{e:constant}
+W(\theta) = \frac{\beta}{\beta + \sigma}.    
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+The irrelevance of the difficulty $D$ in the first part of \autoref{thm:constant} is straightforward: since actions are differentiated only through their costs, changing $D(a)$ amounts to relabeling actions without affecting equilibrium costs. The irrelevance to stakes $s$ follows from a two-step decomposition. Scaling both stakes and difficulty by $\alpha>0$ is a strategically equivalent game, preserving both equilibrium actions and the waste ratio. Scaling difficulty (but not stakes) back down by $1/\alpha$ then leaves equilibrium costs, and hence the waste ratio, unchanged. 
+
+The theorem's second part provides %\autoref{e:constant} is 
+a remarkably simple formula for how much surplus is wasted by signaling in isoelastic environments. The textbook example \citep[e.g.][p.~329]{FT91} 
+%FOR OUR RECORDS: MOFP93 page 244 also use this specification illustratively
+with $B(\theta)=\theta$ and $C(a,\theta)=a/\theta$ corresponds to $\beta=\sigma=1$, and so
+precisely $50\%$ of the surplus is dissipated.
+%it is precisely $50\%$ of the surplus that is dissipated there. 
+More generally, only the ratio $\beta/\sigma$ matters; waste is monotonically increasing in $\beta/\sigma$, ranging all the way from $0$ to $1$. These directional effects are intuitive. Higher $\beta$ means a greater incentive to separate from lower types; the rat race for higher beliefs becomes fiercer and more of the surplus is burned. Conversely, higher $\sigma$ confers a stronger relative cost advantage to higher types, so separation requires less waste. %What is perhaps surprising in \autoref{thm:constant} is the irrelevance of stakes $s$ and difficulty $D(\cdot)$. To explain that irrelevance and how isoelasticity delivers a constant waste, we present the theorem's straightforward proof.
+
+To explain why isoelasticity delivers a constant waste, we present the theorem's proof.
+
+\begin{comment}
+\[s B(\theta)-D(a)S(\theta)\]
+has the same sep eqm [by strategic invariance] and also the same eqm cost/benefit [by algebraic equivalence] as
+\[B(\theta)-(D(a)/s)S(\theta)\]
+which has the same eqm cost/benefit [because eqm cost is invariant, and benefit stays fixed] as
+\[B(\theta)-D(a)S(\theta)\]
+and so eqm cost/benefit is independent of s.
+\end{comment}
+
+
+\begin{proof}[Proof of \autoref{thm:constant}]
+Substituting $C_a(a,\theta)=D'(a) S(\theta)$ and $V(\theta) = s B(\theta)$ into \autoref{e:foc}, the separating strategy $A$ satisfies (for $\theta>0$) the differential equation
+\[
+D'(A(\theta)) A'(\theta) = \frac{s B'(\theta)}{S(\theta)}.
+\]
+As the left-hand side is $\frac{d}{d\theta} D(A(\theta))$, integrate from $0$ to $\theta$ to obtain
+\[
+D(A(\theta))= s\int_0^\theta \frac{B'(t)}{S(t)} \, dt,
+\]
+using $D(A(0))=D(0)=0$.
+Thus, equilibrium costs are\footnote{Equilibrium costs act similarly to payments in mechanism design, and the derivation of \autoref{e:eqm-cost} is akin to that of the payment identity there \citep{Myerson81}. Indeed, based on that link, \autoref{sec:all-pay} shows that the constant-waste formula \eqref{e:constant} under isoelasticity can be recovered by mapping our signaling game to an all-pay auction and exploiting revenue equivalence and order statistics.}
+\begin{equation}
+\label{e:eqm-cost}
+C(A(\theta), \theta) = D(A(\theta)) S(\theta)=s S(\theta) \int_0^\theta \frac{B'(t)}{S(t)} \, dt,
+\end{equation}
+and the waste ratio is
+\begin{equation}
+\label{e:invariance}
+W(\theta) = \frac{C(A(\theta),\theta)}{V(\theta)} = \frac{S(\theta)}{B(\theta)} \int_0^\theta \frac{B'(t)}{S(t)} \, dt.
+\end{equation}
+Both the stakes $s$ and the difficulty $D(\cdot)$ have canceled, establishing part \ref{invariance}. 
+
+\begin{comment}
+For part \ref{constant}, substituting the isoelastic form $B(\theta) = \theta^\beta$ and $S(\theta) = \theta^{-\sigma}$ into \eqref{e:invariance} and simplifying yields
+\begin{align*}
+W(\theta) %& = \frac{\theta^{-\sigma}}{\theta^\beta} \int_0^\theta \frac{\beta t^{\beta-1}}{t^{-\sigma}} \, dt \\ 
+& = \theta^{-\sigma-\beta} \int_0^\theta \beta t^{\beta-1+\sigma} \, dt= \theta^{-\beta-\sigma} \frac{\beta}{\beta + \sigma} \theta^{\beta+\sigma}
+= \frac{\beta}{\beta + \sigma}. \qedhere
+\end{align*}
+\end{comment}
+
+To better interpret the formula \eqref{e:invariance}, define %$\Phi(\theta) := \ln B(\theta) - \ln S(\theta)$ and, for $t\in [\typemin,\theta]$, $G_\theta(t) := e^{\Phi(t) - \Phi(\theta)}$. 
+for $t\in [\typemin,\theta]$, 
+\[G_\theta(t) := \frac{B(t)/S(t)}{B(\theta)/S(\theta)}.\]
+Then $G_\theta$ is a cumulative distribution function on $[\typemin,\theta]$ and we can rewrite \eqref{e:invariance} as%\footnote{\label{fn:weighted-avg}In more detail: observe that $\Phi'(t) = B'(t)/B(t) - S'(t)/S(t)> 0$ for any $t>0$. So $G_\theta$ is a cumulative distribution on $[\typemin,\theta]$, as $G_\theta(\typemin)=0$ (using $B(\typemin)=0$), $G_\theta(\theta)=1$, and it is strictly increasing (its derivative at $t>0$ is $G'_\theta(t)=\Phi'(t)\exp\left({\Phi(t)-\Phi(\theta)}\right)>0$). Rewriting the integrand of \eqref{e:invariance} using ${B'(t)}/{S(t)} = \frac{\elaB(t)}{\elaB(t)+\elaS(t)} \Phi'(t) \exp(\Phi(t))$ and multiplying by ${S(\theta)}/{B(\theta)} = \exp\left({-\Phi(\theta)}\right)$ yields the integrand $\frac{\elaB(t)}{\elaB(t)+\elaS(t)}  G'_\theta(t)$.}
+\footnote{\label{fn:weighted-avg}In more detail: observe that $G_\theta(\typemin)=0$ (using $B(\typemin)=0$),  $G_\theta(\theta)=1$, and for $t>0$, we have $B'(t)>0>S'(t)$.  Hence, $G_\theta$ is strictly increasing on $[\typemin,\theta]$ and is a cumulative distribution function. Its density is $g_\theta(t) = \frac{(B/S)'(t)}{B(\theta)/S(\theta)}$. Rewriting the integrand of \eqref{e:invariance} using $\frac{B'(t)}{S(t)} = \frac{\elaB(t)}{\elaB(t)+\elaS(t)} \cdot \left(\frac{B}{S}\right)'(t)$, which can be verified by expanding $(B/S)'$, and then multiplying by ${S(\theta)}/{B(\theta)}$ yields the integrand $\frac{\elaB(t)}{\elaB(t)+\elaS(t)}g_\theta(t)$.
+}
+\begin{equation}
+\label{e:weighted-avg}
+W(\theta) = \int_0^\theta \frac{\elaB(t)}{\elaB(t)+\elaS(t)} \, dG_\theta(t).
+\end{equation}
+That is, the waste at $\theta$ is a weighted average of the ratios ${\elaB(t)}/{(\elaB(t)+\elaS(t))}$ across types $t<\theta$.
+
+Part \ref{constant} of the theorem follows immediately because in an isoelastic environment the integrand in \eqref{e:weighted-avg} is the constant $\beta/(\beta+\sigma)$. \qedhere
+
+\end{proof}
+
+
+
+
+
+\begin{example}
+\label{eg:isoelastic}
+An isoelastic environment with difficulty $D(a)=a^\gamma$ for  $\gamma>0$ yields the following separating equilibrium quantities:
+    \[A(\theta)=\left(\frac{s \beta}{\beta+\sigma}\right)^{1 / \gamma} \theta^{(\beta+\sigma) / \gamma} \quad \text{and} \quad 
+    C(A(\theta), \theta)=\frac{s \beta}{\beta+\sigma} \theta^\beta.\]
+Recall that the benefit function is $V(\theta) = s \theta^\beta$ and waste is $W(\theta) = C(A(\theta),\theta)/V(\theta)$. Hence, $W(\theta)=\beta / (\beta+ \sigma)$. So the difficulty parameter $\gamma$ affects equilibrium actions, but not costs or benefits, and hence not waste. Stakes $s$ affect actions, costs, and benefits, but not waste.
+\end{example}
+
+
+
+
+Multiplicative separability of costs is important for \autoref{thm:constant} part \ref{invariance}; 
+\autoref{sec:countereg} confirms that more generally the waste ratio can either decrease or increase in stakes.\footnote{Multiplicative costs are immaterial for another invariance: the  waste ratio $W(\theta)$ does not depend on the type distribution $F$. This invariance owes to the well-known property that the separating equilibrium strategy only depends on the support of $F$. The strategy discontinuity at complete information carries over to waste; in particular, under isoelasticity, waste equals $\beta/(\beta+\sigma)$ for any full-support $F$, even though it would be zero under complete information.
+} Similarly, the isoelastic environment is important for part \ref{constant} of the theorem. In fact, up to a normalization of types, the constant-waste property characterizes isoelasticity under multiplicative costs. That is the content of our next result, whose proof is in \appendixref{sec:charproof}.
+%To make that precise, it is useful to introduce type-dependent analogues of $\beta$ and $\sigma$.
+
+
+%In an isoelastic environment, $\elaR$ is constant. The following result says that constant waste is in fact characterized by a constant $\elaR$.
+
+\begin{theorem}
+\label{thm:char}
+Under multiplicative costs, the waste ratio $W(\theta)$ is constant in $\theta > \typemin$ if and only if %the benefit function $V$ and the strain function $S$ satisfy
+%\begin{equation}\label{e:cre} -\frac{d \ln S(\theta)}{d \ln V(\theta)} = \rho
+%\end{equation}
+the ratio of benefit-to-cost elasticities is
+$\elaR(\theta) = \rho$ 
+for some constant $\rho > 0$. The waste ratio then is $W(\theta)=
+\rho/(1 + \rho)$.
+\end{theorem}
+ 
+%\autoref{e:cre} is a {constant relative elasticity} condition: %the (log) rate at which strain declines must be proportional to the (log) rate at which benefits increase. 
+
+Thus, when the ratio of the benefit-to-cost elasticities is constant across types, the tension between signaling incentives and costs resolves identically for all types. Waste is constant at $\rho/(1+\rho) = \elaB(\theta) / (\elaB(\theta) + \elaS(\theta))$. In fact, using \autoref{e:weighted-avg}, \autoref{prop:waste_monotone} in \appendixref{sec:charproof} establishes a more general result: the waste ratio is monotone in type if $\elaR$ is monotone in type.
+
+To see why \autoref{thm:char} characterizes the isoelastic environment up to relabeling types, note that $\elaR(\theta)=\rho$ means $d\ln B/(-d\ln S)=\rho$, i.e., $S = \kappa B^{-1/\rho}$ for some $\kappa > 0$. 
+%To see why \autoref{thm:char} characterizes the isoelastic environment up to relabeling types, note that integrating \autoref{e:cre} yields $S = \kappa V^{-\rho}$ for some $\kappa > 0$. 
+Since $V$ is strictly increasing and $V(\typemin)=0$, it can be reparametrized as $V(\tilde\theta) = s\tilde\theta^\beta$ via the change of variables $\tilde\theta = (V(\theta)/s)^{1/\beta}$, which then gives $S(\tilde\theta) = s^{-\rho}\tilde\theta^{-\sigma}$ with $\sigma = \rho\beta$. The constant $s^{-\rho}$ can be absorbed into $D(\cdot)$, yielding the isoelastic form.
+
+We note that the assumption of multiplicative costs cannot be dropped from \autoref{thm:char}. \autoref{eg:countereg} in \appendixref{sec:countereg} shows that a non-multiplicative cost can have constant waste %even though $-\partial \ln C(a,\theta)/\partial \ln V(\theta)$ varies with $\theta$.
+without a constant-elasticity structure.
+
+\subsection{%Comparative Statics 
+Beyond Isoelasticity}
+\label{subsec:generalCS}
+
+\autoref{e:constant} implies that waste in isoelastic environments increases when $\beta$ is higher or $\sigma$ is lower. Our next result generalizes that comparative static to non-isoelastic cases.
+
+\begin{theorem}
+\label{prop:comp_stat}
+Assume multiplicative costs. Consider two environments with benefit and strain elasticities $(\elaB_1,\elaS_1)$ and $(\elaB_2,\elaS_2)$ respectively, and corresponding waste ratios $W_1$ and $W_2$. For any $\theta'>0$, if $\elaB_2(\theta)\geq\elaB_1(\theta)$ and $\elaS_2(\theta)\leq\elaS_1(\theta)$ for all $\theta\in(0,\theta')$, then $W_2(\theta') \geq W_1(\theta')$.
+\end{theorem}
+
+Note that $\elaB_2\geq\elaB_1$ is equivalent to $(\ln B_2)'\geq(\ln B_1)'$, which in turn is equivalent to $B_2/B_1$ nondecreasing;  similarly, $\elaS_2\leq\elaS_1$ is also equivalent to $(\ln S_2)' \geq (\ln S_1)'$,  or $S_2/S_1$ nondecreasing. So the conditions in \autoref{prop:comp_stat} can also be viewed as monotone ratios.
+
+
+%The logic behind \autoref{prop:comp_stat} is as follows. \autoref{e:invariance} implies that the difference $\Delta(\theta):= W_2(\theta)-W_1(\theta)$ satisfies $\Delta^{\prime}(\theta)=\alpha(\theta) \Delta(\theta)+\gamma(\theta)$ for some functions $\alpha$ and $\gamma$. The theorem's assumptions imply $\gamma(\cdot) \geq 0$. Hence $\Delta^{\prime}(\theta) \geq 0$ whenever $\Delta(\theta)=0$, meaning $W_2$ cannot cross from above to below $W_1$. The proof extends this local argument to rule out $\Delta(\theta)<0$ globally.\footnote{The proof also establishes that if, in addition, either of the elasticity hypotheses holds strictly on a positive measure of types below $\theta'$, then $W_2(\theta')>W_1(\theta')$.}
+
+The intuition for the result can be seen from \autoref{e:weighted-avg}: a pointwise increase in $\elaB$ and decrease in $\elaS$ raises the integrand $\elaB/(\elaB+\elaS)$ pointwise, pushing waste up. The formal proof in \appendixref{sec:proof:compstat} is more nuanced because the weighting distribution $G_\theta$ also differs across environments.\footnote{The proof also establishes that if, in addition, either of the elasticity hypotheses holds strictly on a positive measure of types below $\theta'$, then $W_2(\theta')>W_1(\theta')$.}
+
+\begin{example}
+\label{eg:comp_stat}
+Consider two environments, one with benefit function $B_1(\theta)=\theta$ and the other with $B_2(\theta)=e^\theta-1$. Both have a common strain function $S(\theta)=\theta^{-1}$. The first environment is thus isoelastic with $\beta = \sigma=1$, and has constant waste $W_1=1/2$. The benefit elasticity in the second environment is $\elaB_2(\theta)=\theta e^\theta/(e^\theta-1) > 1=\elaB_1(\theta)$ for all $\theta>0$.
+A straightforward computation from \autoref{e:invariance} yields
+\[W_2(\theta)=\frac{1 / \theta}{e^\theta-1} \int_0^\theta t e^t \, d t=\frac{(\theta-1)e^\theta+1}{\theta(e^\theta-1)},\]
+which increases from $1/2$ (as $\theta\to 0$) to $1$ (as $\theta\to\infty$). The higher benefit elasticity in the second environment thus yields higher waste at every type.
+\end{example}
+
+
+We note that the elasticity-ranking hypotheses in \autoref{prop:comp_stat} are not necessary for its conclusion; after all, in isoelastic environments, waste only depends on the ratio $\beta/\sigma$. However, the hypotheses are tight in the following sense: if $\elaB_2 (\theta)< \elaB_1(\theta)$ for some type $\theta$, there is a common isoelastic strain function $S$ such that $W_2 (\theta')< W_1(\theta')$ at some type $\theta'$, and symmetrically for the $\elaS$ condition. See \appendixref{sec:proof:compstat}.
+
+Lastly, there are simple bounds on waste even without knowing exact forms of the benefit or strain functions. Specifically, \autoref{e:weighted-avg} directly yields that if there are constants $\overline \beta$ and $\underline \sigma$ such that $\elaB(\theta) \leq \overline{\beta}$ and $\elaS(\theta) \geq \underline{\sigma}$ for all $\theta$, then $W(\theta) \leq \overline{\beta}/(\overline{\beta}+\underline{\sigma})$ for all $\theta$. Symmetrically, if $\elaB(\theta) \geq \underline{\beta}$ and $\elaS(\theta) \leq \overline{\sigma}$ for all $\theta$, then $W(\theta) \geq \underline{\beta}/(\underline{\beta}+\overline{\sigma})$ for all $\theta$.
+
+\begin{example}
+Suppose the benefit function is $V(\theta) = \theta^2$ (so $\elaB(\theta) = 2$) but the cost function is only known to have strain elasticity $\elaS(\theta) \in [1,3]$ for all $\theta$. Then %it follows from \autoref{e:weighted-avg} that
+$W(\theta) \in [2/5,\, 2/3]$; in other words, signaling dissipates between 40\% and 67\% of each type's surplus, regardless of the exact strain elasticity.
+\end{example}
+
+
+
+\section{Is the Waste Worth It?}
+\label{sec:welfare}
+
+
+Our waste ratio only factors in the cost of signaling relative to agents' private benefits from %being thought of as a higher type. 
+market beliefs. 
+The social value of learning agents' types may be different from agents' private value---higher, lower, or even zero. In this section, we explore how the waste ratio relates to the social value of information in a simple %parametric 
+extension of our isoleastic specification. 
+
+Suppose there is competitive market of firms that seek to hire the agent. After observing the agent's signaling action, the firms offer a wage. The agent accepts the highest wage offer, and the firm that hires the agent then takes a decision---which we interpret as an investment level---$x\in \Reals$, with profit
+\begin{equation}
+\label{e:profit}
+\theta x - \alpha x^\gamma/\gamma.
+\end{equation}
+So $\theta$ is the agent's marginal product, complementary to the firm's investment, and $\alpha x^\gamma/\gamma$ is the cost of investment, with $\alpha>0$ and $\gamma > 1$.\footnote{%This profit expression includes a normalization on the agent’s type: fixing any investment $x$, output is linear in $\theta$. The benefit and cost strain elasticities $\beta$ and $\sigma$ are now interpreted relative to this normalization. With output of $\theta^r x$ rather than $\theta x$, we could transform variables into $\tilde \theta = \theta^r$ to fit profit into the form of \eqref{e:profit}. That would correspond to transformed elasticities of $\tilde \beta = \beta / r$ and $\tilde \sigma = \sigma/r$ with respect to $\tilde \theta$.
+%
+The linearity of \eqref{e:profit} in $\theta$ is a normalization within the class of power functions. If output were instead $\theta^r x$ for some $r > 0$, we could redefine the type as $\tilde\theta = \theta^r$, with corresponding benefit and cost elasticities (discussed subsequently) $\tilde \beta = \beta / r$ and $\tilde \sigma = \sigma/r$.}
+A routine calculation shows that when a firm believes the agent's type has expectation $\hat \theta$, it expects a profit of $s \hat \theta^\beta$, where $s>0$ depends on $\alpha$ and $\gamma$, and $\beta:=\frac{\gamma}{\gamma-1}>1$.\footnote{Given expected type $\hat \theta$, the firm's optimal investment is $x=(\hat \theta/\alpha)^{\frac{1}{\gamma -1}}$. Substituting into \eqref{e:profit} yields expected profit $\frac{\gamma -1}{\gamma}\alpha^{-\frac{1}{\gamma-1}} \hat \theta^\beta$.}
+ 
+Thus, firm competition implies the agent's benefit from signaling is $V(\hat\theta) = s \hat\theta^{\,\beta}$. This microfounds our isoelastic benefit specification. The less convex are firms' costs (lower $\gamma$), the more responsive are their optimal investment and expected profit to the agent's perceived type, and thus the steeper is the agent's benefit function.
+
+Define the {gross separation value} (GSV) as the ex-ante expected social surplus under complete information, the {net separation value} (NSV) as that minus the expected cost of signaling, and the {pooling value} (PV) as the surplus when firms invest based on the agent's mean type. That is,
+$$GSV:=s \E[\theta^\beta], \quad NSV:=GSV-\E[C(A(\theta),\theta)], \quad PV:= s (\E[\theta])^\beta.$$
+
+With an isoelastic signaling cost, our waste formula \eqref{e:constant} implies $\mathit{NSV} = \frac{\sigma}{\beta+\sigma}{GSV}$. Consequently, separation has higher net value than pooling if and only if
+\begin{equation}
+\label{eq:welfare}
+\frac{\sigma}{\beta + \sigma} > \frac{(\E[\theta])^\beta}{\E[\theta^\beta]}.
+\end{equation}
+The left-hand side is the fraction of surplus not dissipated by signaling. The right-hand side---the \emph{pooling efficiency ratio}---is \textit{PV/GSV}, the fraction of surplus captured in a pooling equilibrium (which has no signaling waste). Since $\beta>1$, this pooling efficiency ratio is strictly below $1$ (by Jensen's inequality) and it decreases in $\beta$.\footnote{For $\beta > 1$, Lyapunov's inequality implies $\left(\E[\theta^\beta]\right)^{1 / \beta}$ is increasing in $\beta$, and hence so is $\phi(\beta):=\frac{1}{\beta} \ln \E[\theta^\beta]$. Since
+\[
+\ln \frac{(\E[\theta])^\beta}{\E[\theta^\beta]}=-\beta(\phi(\beta)-\phi(1)),
+\]
+it follows that this left-hand side---and hence also the pooling efficiency ratio---is decreasing in $\beta$.}
+
+Inequality \eqref{eq:welfare} is instructive. A higher strain elasticity $\sigma$ reduces signaling waste and unambiguously favors separation. A higher benefit elasticity $\beta$ (stemming from greater convexity of the firms' investment costs) increases the waste ratio but also reduces the pooling efficiency ratio, as the social value of information is larger. The net effect on inequality \eqref{eq:welfare} depends on the type distribution, which affects the pooling efficiency ratio but not the waste ratio. Greater type heterogeneity in the sense of a mean-preserving spread lowers the pooling efficiency ratio, and hence favors separation.\footnote{For any $\beta>1$, the function $\theta^\beta$ is convex, so a mean-preserving spread increases $\E[\theta^\beta]$ without changing $(\E[\theta])^\beta$.} Indeed, if the support of the type distribution is unbounded ($\typemax=\infty$), then for any fixed $\beta$ and $\sigma$, sufficient type heterogeneity justifies separation regardless of how large the waste ratio is. Conversely, if type heterogeneity is sufficiently limited, then pooling dominates separation.
+
+%\begin{example}
+%For $\theta$ on $[0,1]$ with PDF $f(\theta) = k\theta^{k-1}$, the pooling efficiency ratio is $(k+\beta)/k \cdot (k/(k+1))^\beta$. For a uniform distribution, this simplifies to $(1+\beta)/2^\beta$.
+%\end{example}
+
+\begin{example}
+Consider a log-normal distribution of types: $\ln\theta \sim \mathcal N (0, \nu^2)$, where the zero mean is a normalization and the variance is $\nu^2>0$.  Here $
+\E[\theta^\beta]=\exp\left(\beta^2 \nu^2 / 2\right)$ and $
+(\E[\theta])^\beta=\exp\left({\beta \nu^2 / 2}\right)$, so the pooling efficiency ratio is $$\exp(-\nu^2\beta(\beta-1)/2).$$ Pooling efficiency thus decays exponentially in both the variance of log-types and the benefit elasticity. Rearranging \eqref{eq:welfare}, separation dominates pooling despite signaling's waste if and only if
+% \[
+% \nu^2 > \frac{2\ln\left(1 + {\beta}/{\sigma}\right)}{\beta(\beta-1)}=-\frac{2\ln\left(1-W\right)}{\beta(\beta-1)},
+% \]
+% where $W=\beta/(\beta+\sigma)$ is the waste ratio.
+\begin{align} 
+\label{eq:lognormal}
+\nu^2 > \frac{2\ln\left(1 + {\beta}/{\sigma}\right)}{\beta(\beta-1)}.
+\end{align}
+%As expected, 
+A higher variance $\nu^2$ makes separation relatively more appealing than pooling. %, as the left-hand side of \eqref{eq:lognormal} increases in $\nu^2$. 
+In this example, a higher benefit elasticity $\beta$ also makes separation relatively more appealing, as the right-hand side of \eqref{eq:lognormal} decreases in $\beta$.%\footnote{The derivative of the RHS of  \eqref{eq:lognormal} can be written as $\frac{2}{\beta^2 (\beta-1)^2 (\beta+\sigma)} \cdot \left( \beta (\beta - 1) - (2 \beta - 1) (\beta + \sigma) \log(1+ \beta/\sigma)\right)$. The leading fraction is positive for $\beta>1$ and $\sigma>0$. We then apply the inequality $\log(1+x) \ge x/(1+x)$ to get that $ \beta (\beta - 1) - (2 \beta - 1) (\beta + \sigma) \log(1+ \beta/\sigma) \le \beta (\beta - 1) - (2 \beta - 1) (\beta + \sigma) \frac{\beta}{\beta + \sigma} = \beta ((\beta - 1) -(2 \beta -1)) = -\beta^2 <0 $.}
+\footnote{Differentiation and some algebra shows that monotonicity reduces to the inequality $\ln (1+x) \geq x /(1+x)$ for $x \geq 0$, which holds.}
+%For example, under quadratic firm investment cost (so $\beta=2$), this simplifies to a ``breakeven'' strain threshold $\sigma>2/(\mathrm{sd}[\theta]/\E[\theta])^2$.
+\end{example}
+
+\section{A Signaling Tournament}
+\label{sec:tournament}
+
+We now apply the constant-waste formula \eqref{e:constant} to signaling in a tournament, such as workers competing for a job. Richer models of tournament-like signaling and matching have been studied by \citet{HoppeMoldovanuSela09} and \citet{Hopkins12}. %; they do not focus on quantifying waste.
+While these papers discuss signaling inefficiencies, their focus is not on quantifying waste. \citet*{HoppeMoldovanuSela09} do show that in their model of two-sided signaling prior to assortative matching, waste is bounded by half of output value, with the bound tight at a continuum-agent limit.
+
+We consider a market modeled as a tournament among $N\geq 2$ candidates for a single prize of value or size $s>0$ (e.g., a promotion or a job offer).  Candidates' types are their private information, drawn independently from a common distribution $F$ on $[0,1]$. Candidates simultaneously choose their observable signaling actions. The prize is awarded to the candidate with the highest perceived type.
+
+If candidate $i$ is perceived as type $\hat\theta_i$, her probability of winning is $\Prob(\hat\theta_i > \max_{j \neq i} \hat\theta_j)$. In a symmetric separating equilibrium, each candidate's expected benefit is
+\[
+V(\theta) = s \left(F(\theta)\right)^{N-1}.
+\]
+
+Under the uniform distribution the expected benefit simplifies to $V(\theta) = s \theta^{N-1}$; this is an isoelastic benefit with $\beta = N-1$.  Assuming isoelastic signaling costs with unit strain elasticity $\sigma=1$ (i.e., $C(a,\theta)=D(a)/\theta$ for some $D$), \autoref{thm:constant} immediately implies a constant waste ratio:
+\begin{equation}\label{e:tournament}
+W_N(\theta) := \frac{N-1}{N}.
+\end{equation}
+This expression is $1/2$ when $N=2$; it increases in $N$; and as $N \to \infty$, the waste ratio approaches 1. In other words, greater competition exacerbates waste, with the entire surplus dissipated in the limit.\footnote{The formula \eqref{e:tournament} is reminiscent of auction theory. Indeed, a signaling tournament (with its separating equilibrium) is equivalent to an all-pay auction with $N$ bidders (with its usual symmetric equilibrium). See also \autoref{sec:all-pay}.}
+
+\paragraph{The Tullock Connection.} 
+The formula \eqref{e:tournament} is exactly the rent dissipation rate in a symmetric Tullock lottery contest with $N$ players \citep{Tullock80}. %This is not a coincidence. 
+There, each player $i$ chooses effort $x_i \geq 0$ to win a prize of size $s>0$, with a linear cost and winning probability $x_i / \sum_j x_j$.\footnote{The ``lottery'' descriptor for the Tullock contest refers to effort entering the winning probability linearly in both the numerator and denominator. \citet{Nitzan94} and \citet{Corchon07} survey generalizations of this and many other aspects of contests.} In the symmetric equilibrium, each player exerts effort $x^* = s(N-1)/N^2$, and total effort is $Nx^*=s(N-1)/N$, hence $(N-1)/N$ of the prize is dissipated.
+
+
+For an arbitrary strain elasticity $\sigma>0$ and power distribution $F(\theta)=\theta^k$ with $k>0$ (which yields benefit elasticity $\beta=k(N-1)$), \autoref{thm:constant} implies that the waste ratio \eqref{e:tournament} generalizes to \mbox{$k(N-1) /(k(N-1)+\sigma)$}. \citet{Tullock80} showed that in a contest with winning probability $(x_i)^r / \sum_j (x_j)^r$ for $r\in (0,1]$, the rent dissipation rate is $r(N-1)/N$.  We see that when $r\neq 1$, there is an important difference in large markets. As $N\to \infty$, the rent dissipation rate in the Tullock contest asymptotes to $r$, whereas in the signaling tournament it goes to $1$ regardless of $\sigma$ and $k$. Intuitively, the noise in a non-lottery Tullock contest can preserve some surplus even with extreme competition; but separating from a dense field of competitors forces full dissipation under signaling. 
+
+The two models also differ in their sensitivity to the cost structure. Consider a Tullock lottery contest (so $r=1$) with an isoelastic cost of effort, $D(x) = x^\gamma$ with $\gamma \ge 1$. As this contest is isomorphic to one with a linear cost but winning probability parameter $r=1/\gamma$, the rent dissipation rate is now $(1/\gamma)(N-1)/N$. Greater cost convexity (higher $\gamma$) reduces rent dissipation by steepening marginal costs, which discourages effort. %dampening the marginal return to effort. 
+By contrast, \autoref{thm:constant} implies that in the signaling tournament, the difficulty $D(\cdot)$ is irrelevant; separation forces agents to scale their efforts with $D(\cdot)$ exactly enough to leave waste unchanged. Unlike in a contest, then, signaling tournaments' waste cannot be reduced by simply making better performance costlier (increasing $\gamma$); one must reduce the number of competitors or flatten the prize gradient (the benefit elasticity $\beta$).
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+We have proposed the \hyperref[def:waste]{waste ratio}---the fraction of a type's surplus dissipated through signaling---as a natural measure of signaling inefficiency in separating equilibria. 
+Our main result, \autoref{thm:constant}, has two parts. First, under multiplicative costs, the waste ratio is invariant to signaling stakes (a scale parameter of benefits) and signaling difficulty (the type-independent scale or shape of the cost function). Second, in \hyperref[def:isoelastic]{isoelastic environments}, the waste ratio has a simple formula that is constant across types: 
+$\beta/(\beta + \sigma)$, where $\beta$ is the benefit elasticity and $\sigma$ is the strain elasticity, a measure of higher types' comparative advantage. 
+
+The invariance to difficulty undermines some common intuitions about the inefficiency of signaling. Consider the debate about the difficulty of standardized tests for college admissions. Recent trends favor shorter, less complex tests (such as the digital SAT) to reduce student stress. 
+Conversely, some critics %of grade inflation often 
+call for harder exams to restore selectivity. Our results suggest that, when viewed through the canonical signaling lens, neither approach may address the underlying waste. Adjusting the difficulty of the test uniformly for all students---whether making it easier or harder---need not change the total resource dissipation; it could merely rescale equilibrium effort while leaving the waste ratio constant.\footnote{This invariance does rely on a single-dimensional framework; it could break if students also differ in test-taking aptitude separate from underlying ability, which would lead to ``muddled information'' \citep{FK19}.} As long as admissions at selective colleges resemble winner-take-all signaling tournaments with many competitors, the process is likely to dissipate significant surplus, regardless of how the testing technology is calibrated.
+
+Of course, college admission itself is not the final prize. There are concerns about the ``winner-take-all'' nature of the broader society \citep[e.g.,][]{frank1996winner}. For a fixed distribution of underlying types, our isoelastic specification captures the inequality of socio-economic outcomes via the benefit elasticity $\beta$. In particular, with value function $V(\theta) = s \theta^\beta$, a higher $\beta$ corresponds to more inequality via a more convex mapping from types to benefits. Our results show that a higher $\beta$---corresponding, perhaps, to the US versus lower inequality countries like Canada or Sweden---goes hand in hand with more waste from signaling.
+
+The strain elasticity $\sigma$ also matters. Another approach to reducing waste would be to make signaling instruments more discriminating in the sense of increasing $\sigma$. Returning to exams, a redesigned test that amplifies high-ability students' comparative advantage---rather than scaling difficulty uniformly---would correspond to increasing $\sigma$ and would indeed reduce waste. Interestingly, this echoes a discussion in the biological signaling literature: animals can often reliably convey information while incurring minimal waste. The mechanism stems from sharply different marginal costs across types---originally proposed by \citet{Zahavi77} to refine his earlier ``handicap'' hypothesis---rather than difficulty. Scholars have argued that because Darwinian selection favors efficiency, it leads to biological signals that are cheap for high-quality types but prohibitive for low-quality types \citep{PennSzamado20}, corresponding to a high strain elasticity $\sigma$.
+
+We close by commenting on some limitations of our analysis. First, we only study separating equilibria. That is consistent with much of the literature's emphasis, often justified by stability-based arguments \citep[e.g.,][]{ChoSobel90}. But there are also critiques of the exclusive focus on separating equilibria \citep[e.g.,][]{MOFP93}. Equilibria with some pooling, where certain types choose identical actions, can reduce signaling costs and waste \citep[e.g.,][]{krishna2026pareto}.
+
+%Second, our waste ratio only factors in the cost of signaling relative to the \emph{private} benefits from being thought of as a higher type. The social value of learning agents' types may be different from agents' private value---higher, lower, or even zero.
+
+%Third, 
+Second, we focus on the dissipative cost of signaling activities. Such activities can, of course, sometimes be productive; see \autoref{fn:productive}. We expect that even in a broader welfare calculus, our waste ratio is a useful input: the net social value must weigh signaling's intrinsic benefit against its waste.
+
+
+Lastly, \autoref{thm:char} indicates that the waste ratio is less tractable outside the isoelastic class. It will then generally vary with type---so aggregation will depend on the type distribution---and on the full functional forms of costs and benefits. We do not suggest that isoelasticity should be taken literally. Rather, we view it as focal by analogy to how CRRA utility is canonical not because preferences literally exhibit constant relative risk aversion, but because it affords tractable analyses and scale-free results. We hope the waste formula $\beta/(\beta + \sigma)$ is a similarly useful benchmark for signaling's welfare cost. %A broader lesson is the invariance of waste to difficulty and stakes under multiplicative costs.
+There are also two broader lessons under multiplicative costs: 
+waste is invariant to difficulty and stakes; and, per \autoref{prop:comp_stat}, waste increases for every type if the benefit elasticity increases pointwise or the strain elasticity decreases pointwise.
+
+\appendix
+
+\section{Separating Equilibria}
+\label{sec:separating}
+
+A \emph{(mixed) strategy} for the agent is a measurable mapping $\alpha: \Theta \to \Delta(\Rpos)$, where $\Delta(\Rpos)$ denotes the set of probability distributions over actions. A \emph{pure strategy} is a strategy $\alpha$ such that $\alpha(\theta)$ has singleton support for all $\theta$; we denote a pure strategy more simply by $A:\Theta \to \Rpos$.
+Since a belief concentrated on type $\typemin$ is the ``worst belief'' (by monotonicity of the benefit function $V$), and hence is the most conducive off-path belief to support an equilibrium, we say that strategy $\alpha$ defines a \emph{separating equilibrium} if:
+\begin{enumerate}
+    \item \label{sepdef1} (Separation.) For any $\theta \neq \theta'$, the distributions are mutually singular: $\alpha(\theta) \perp \alpha(\theta')$.\footnote{Recall that two distributions are {mutually singular} if each assigns probability one to a set that the other assigns probability zero. In other words, the two types choose distinct actions with probability one.}
+    \item \label{sepdef2} (Incentive compatibility.) For each $\theta \in \Theta$, $\alpha(\theta)$-a.e.~$a$, and all $a' \in \Rpos$:
+    \[
+    V(\theta) - C(a, \theta) \geq V(\hat \theta(a')) - C(a', \theta),
+    \]
+    where $\hat \theta (a') = \theta'$ if $a' \in \supp(\alpha(\theta'))$ for a unique $\theta'$, and $\hat \theta (a') = 0$ otherwise.\footnote{Note that the belief is stipulated as zero for any action in the support of multiple types' mixtures. This is for convenience; it is justified because Bayes' rule (formally, $\hat \theta(\cdot)$ being determined by a regular conditional distribution) only pins down beliefs $\mu$-a.e., where $\mu$ is the marginal distribution over actions induced by the prior $F$ and strategy $\alpha$. Mutual singularity from point \ref{sepdef1} of the definition ensures that for each $\theta$ and $\alpha(\theta)$-a.e.~action $a$, the belief $\hat \theta(a)=\theta$.}    
+\end{enumerate}
+
+\begin{proposition}\label{prop:separating-differentiable}
+Any separating equilibrium is a pure-strategy equilibrium. Moreover, its strategy $A: \Theta \to \Rpos$ is continuous and strictly increasing on $[\typemin,\typemax\rangle$, %continuously 
+differentiable on $(\typemin, \typemax\rangle$, and satisfies
+\begin{equation}
+\label{e:ODE}
+A'(\theta) = \frac{V'(\theta)}{C_a(A(\theta), \theta)} \quad \text{for } \theta > \typemin,
+\end{equation}
+with boundary condition $A(\typemin) = 0$.
+\end{proposition}
+
+Although we are not aware of an existing result that directly implies \autoref{prop:separating-differentiable}, the proof follows familiar lines \citep[cf.~][]{Mailath87} and is provided in the \suppapp{sec:proof:separating-differentiable}.  It is worth noting that because \autoref{prop:separating-differentiable} only establishes necessary conditions for a separating equilibrium, it does not require all of \autoref{ass:basics}; in particular, it is enough that $V$ is %$\mathcal C^1$ rather than $\mathcal C^2$, 
+differentiable (rather than twice differentiable), %there is no need for differentiability of $C_a$ or that $C_{a\theta} < 0$. 
+that $C_a$ is continuous (rather than differentiable), and that $C(\cdot,\theta)$ is strictly increasing---where finite for type $0$---for all $\theta$ (it is not necessary that $C_{a\theta}<0$). The additional properties are instead used to verify sufficiency in the next result, whose proof---which largely follows \citet{Mailath87}---is also in the \suppapp{sec:proof:separating-differentiable}.
+
+\begin{proposition}
+\label{prop:sufficiency}
+A continuous function $A: \Theta \to \Rpos$ that is differentiable on $(0,\overline \theta\rangle $ and satisfies \eqref{e:ODE} and $A(0)=0$ constitutes a separating equilibrium.
+\end{proposition}
+
+
+\section{Proof of \autoref{thm:char}}
+\label{sec:charproof}
+
+We first prove the following result.
+
+
+\begin{proposition}
+\label{prop:waste_monotone}
+Assume multiplicative costs. If $\elaR(\theta)$ is nondecreasing, then $W(\theta)$ is nondecreasing; if $\elaR(\theta)$ is nonincreasing, then $W(\theta)$ is nonincreasing.
+\end{proposition}
+
+\begin{comment}
+\begin{proof}%[Proof of \autoref{prop:waste_monotone}]
+Recall that
+$\elaR(\theta) = \tilde\beta(\theta)/\tilde\sigma(\theta) = (\ln B)'/(-(\ln S)') > 0$.
+Let
+\[
+\varphi(\theta):=\frac{\elaR(\theta)}{1+\elaR(\theta)}
+\quad\text{and}\quad
+\Phi(\theta):=\ln B(\theta)-\ln S(\theta).
+\]
+Then $\Phi'=(\ln B)'+(-(\ln S)')>0$, so $\Phi$ is strictly increasing; and since $B(\typemin)=0$ while $S$ is positive and decreasing, we have $\Phi(\theta)\to-\infty$ as $\theta\to \typemin$. Moreover,
+\[
+\frac{B'(t)}{S(t)}
+=
+\frac{(\ln B)'(t)\,B(t)}{S(t)}
+=
+\varphi(t)\,\Phi'(t)\,e^{\Phi(t)}.
+\]
+Substituting into \autoref{e:invariance} yields
+\[
+W(\theta)
+=
+e^{-\Phi(\theta)}
+\int_{\typemin}^{\theta}\varphi(t)\,\Phi'(t)\,e^{\Phi(t)}\,dt
+=
+e^{-\Phi(\theta)}
+\int_{-\infty}^{\Phi(\theta)} \varphi(\Phi^{-1}(u))\,e^u\,du,
+\]
+where the second equality uses the change of variables $u = \Phi(t)$. Since $\int_{-\infty}^{\Phi(\theta)} e^u\,du=e^{\Phi(\theta)}$, we see that $W(\theta)$ is a weighted average of $\varphi(\Phi^{-1}(u))$ over $u\le \Phi(\theta)$, with positive weights proportional to $e^u$. Hence if $\elaR$ is nondecreasing, then $\varphi(\Phi^{-1}(\cdot))$ is nondecreasing and $W(\theta)\le \varphi(\theta)$; if $\elaR$ is nonincreasing, then $W(\theta)\ge \varphi(\theta)$. Finally,
+\[
+W'(\theta)=(\ln B)'(\theta)(1-W(\theta))+(\ln S)'(\theta)W(\theta)
+=\Phi'(\theta)\bigl[\varphi(\theta)-W(\theta)\bigr].
+\]
+As $\Phi'>0$, we conclude that $W'\ge 0$ if $\elaR$ is nondecreasing, and $W'\le 0$ if $\elaR$ is nonincreasing.
+\end{proof}
+\end{comment}
+
+\begin{comment}
+\begin{proof}%[Proof of \autoref{prop:waste_monotone}]
+Recall that
+$\elaR(\theta) = \tilde\beta(\theta)/\tilde\sigma(\theta) = (\ln B)'/(-(\ln S)') > 0$.
+Let
+\[
+\varphi(\theta):=\frac{\elaR(\theta)}{1+\elaR(\theta)}
+\qquad\text{and}\qquad
+\Phi(\theta):=\ln B(\theta)-\ln S(\theta).
+\]
+Since $B'>0$, $B(\theta)\to 0$ as $\theta \to 0$, and $S'<0$, we have $\Phi'>0$ and $\Phi(\theta)\to-\infty$ as $\theta\to \typemin$. Using
+\[
+\frac{B'(t)}{S(t)}
+=
+\frac{(\ln B)'(t)\,B(t)}{S(t)}
+=
+\varphi(t)\,\Phi'(t)\,e^{\Phi(t)},
+\]
+\autoref{e:invariance} becomes
+\[
+W(\theta)
+=\int_{\typemin}^{\theta}\varphi(t)\,\Phi'(t)\,e^{\Phi(t)-\Phi(\theta)}\,dt.
+\]
+For each $\theta$ and $t\leq \theta$, define
+$$G_\theta(t):=e^{\Phi(t)-\Phi(\theta)}.$$
+$G_\theta$ is a cumulative distribution function on \([\typemin,\theta]\). Hence 
+\[
+W(\theta)=\mathbb{E}_{G_\theta}[\varphi(t)].
+\]
+
+Now let \(\theta_2>\theta_1\). For \(t\le\theta_1\),
+\[
+G_{\theta_2}(t)=e^{\Phi(t)-\Phi(\theta_2)}
+\le e^{\Phi(t)-\Phi(\theta_1)}=G_{\theta_1}(t),
+\]
+and for \(t\in(\theta_1,\theta_2]\), \(G_{\theta_1}(t)=1\ge G_{\theta_2}(t)\). Thus \(G_{\theta_2}\) first-order stochastically dominates \(G_{\theta_1}\). If \(\elaR\) is nondecreasing, then so is \(\varphi\), and consequently,
+\[
+W(\theta_2)=\mathbb{E}_{G_{\theta_2}}[\varphi(t)]
+\ge
+\mathbb{E}_{G_{\theta_1}}[\varphi(t)]
+=W(\theta_1).
+\]
+Thus, \(W\) is nondecreasing. The case of \(\elaR\) nonincreasing is symmetric.
+\end{proof}
+\end{comment}
+
+\begin{proof}
+%Recall from \autoref{e:weighted-avg} in the proof of \autoref{thm:constant} that $$W(\theta) = \int_\typemin^\theta \frac{\elaB(t)}{\elaB(t)+\elaS(t)} \, dG_\theta(t).$$ Consider any $\theta_2>\theta_1$. The distribution $G_{\theta_2}$ first-order stochastically dominates $G_{\theta_1}$ because, for $t \leq \theta_1$, the monotonicity of $\Phi$ (see \autoref{fn:weighted-avg}) implies $$G_{\theta_2}(t) = e^{\Phi(t)-\Phi(\theta_2)} \leq e^{\Phi(t)-\Phi(\theta_1)} = G_{\theta_1}(t).$$
+Recall from \autoref{e:weighted-avg} in the proof of \autoref{thm:constant} that
+$$W(\theta) = \int_\typemin^\theta \frac{\elaB(t)}{\elaB(t)+\elaS(t)} \, dG_\theta(t).$$
+Consider any $\theta_2>\theta_1$. The distribution $G_{\theta_2}$ first-order stochastically dominates $G_{\theta_1}$ because, for $t \leq \theta_1$, the monotonicity of $B/S$ implies
+$$G_{\theta_2}(t) = \frac{B(t)/S(t)}{B(\theta_2)/S(\theta_2)} \leq \frac{B(t)/S(t)}{B(\theta_1)/S(\theta_1)} = G_{\theta_1}(t).$$
+If $\elaR$ is nondecreasing, so is $\elaB/(\elaB+\elaS)$, and hence $W(\theta_2) \geq W(\theta_1)$. The case of $\elaR$ nonincreasing is symmetric. \qedhere
+\end{proof}
+
+\autoref{eg:comp_stat} presented one environment with an increasing ratio of benefit-to-cost elasticities: $\elaR_2(\theta) = \theta e^\theta/(e^\theta - 1)$. The computation there of an increasing waste ratio function $W_2$ illustrates \autoref{prop:waste_monotone}.
+
+\begin{proof}[Proof of \autoref{thm:char}]
+If $\elaR(\theta)=\rho$ is constant, \autoref{prop:waste_monotone} implies $W$ is both nondecreasing and nonincreasing, hence constant. The converse argument below then gives $W=\rho/(1+\rho)$. 
+
+Conversely, if $W(\theta)=k\in (0,1)$ is constant, differentiating \autoref{e:invariance} gives $0=(\ln B)'(1-k)+(\ln S)'k$, and hence $\elaR(\theta) = (\ln B)'/(-(\ln S)') = k/(1-k)$, a constant. Setting $\rho:=k/(1-k)$ gives $W=\rho/(1+\rho)$.
+\end{proof}
+
+\section{Proof of \autoref{prop:comp_stat}} 
+\label{sec:proof:compstat}
+
+\begin{comment}
+\begin{proof}[Proof of \autoref{prop:comp_stat}]
+Differentiating \autoref{e:invariance} (and dropping the argument $\theta\in \left(\typemin,\theta'\right)$ for brevity), we get $W_i' = (\ln B_i)'(1-W_i) + (\ln S_i)' W_i$.\footnote{In more detail: $W' = \left(\frac{S}{B}\right)' \int_0^\theta \frac{B'}{S}\,dt + \frac{S}{B}\cdot\frac{B'}{S} = \left(\frac{S'}{S}-\frac{B'}{B}\right)W + \frac{B'}{B} = (\ln B)'(1-W)+(\ln S)'W$.} Let $\Delta := W_2 - W_1$. We then have the linear ordinary differential equation
+\begin{equation}
+\label{e:Delta'}
+\Delta' = \alpha\,\Delta + \gamma,
+\end{equation}
+where
+\begin{align*}
+\alpha & := (\ln S_1)' - (\ln B_1)',\\
+\gamma &:= ((\ln B_2)' - (\ln B_1)')(1-W_2) + ((\ln S_2)' - (\ln S_1)')W_2.
+\end{align*}
+Since $W_2\in(0,1)$, the elasticity assumptions $\elaB_2\geq\elaB_1$ and $\elaS_2\leq\elaS_1$ (equivalently $(\ln B_2)'\geq (\ln B_1)'$ and $(\ln S_2)'\geq (\ln S_1)'$) ensure $\gamma\geq 0$ on $(0,\theta')$. This immediately implies $\Delta'(\theta) \geq 0$ whenever $\Delta(\theta) = 0$, so $\Delta$ cannot cross from above to below $0$ on $(\typemin,\theta']$. 
+
+To establish $\Delta(\theta') \geq 0$, we solve the differential equation \eqref{e:Delta'} on $(\varepsilon,\theta']$ and get
+\[
+\Delta(\theta') = \Delta(\varepsilon)\exp\!\left(\int_\varepsilon^{\theta'}\alpha(u)\,du\right) + \int_\varepsilon^{\theta'} \gamma(t)\exp\!\left(\int_t^{\theta'}\alpha(u)\,du\right)\,dt.
+\]
+Observe that $\Delta(\varepsilon)$ is bounded while
+\[
+\exp\!\left(\int_\varepsilon^{\theta'}\alpha(u)\,du\right)
+=
+\frac{S_1(\theta')B_1(\varepsilon)}{S_1(\varepsilon)B_1(\theta')}
+\to 0
+\quad\text{as }\varepsilon\to \typemin,
+\]
+where the convergence follows because $B_1(\varepsilon)\to 0$ while $S_1(\varepsilon)\ge S_1(\theta')>0$. We thus have $\Delta(\varepsilon)\exp\left(\int_\varepsilon^{\theta'}\alpha\,du\right)\to 0$ as $\epsilon \to \typemin$. Consequently,
+\[
+\Delta(\theta')
+=
+\int_\typemin^{\theta'} \gamma(t)\exp\!\left(\int_t^{\theta'} \alpha(u)\,du\right)\!dt
+\geq 0. \qedhere
+\]
+\end{proof}
+\end{comment}
+
+\begin{proof}[Proof of \autoref{prop:comp_stat}]
+Differentiating \autoref{e:invariance} (and dropping the argument $\theta \in (0,\theta')$ for brevity),\footnote{In more detail:
+$W' = \left(\frac{S}{B}\right)' \int_0^\theta \frac{B'}{S}\,dt + \frac{S}{B}\cdot\frac{B'}{S} = \left(\frac{S'}{S}-\frac{B'}{B}\right)W + \frac{B'}{B} = (\ln B)'(1-W) + (\ln S)'W.$} we have
+\[
+W_i' = (\ln B_i)'(1-W_i) + (\ln S_i)' W_i.
+\]
+Let $\Delta(\theta) := W_2(\theta) - W_1(\theta)$. Then
+\begin{equation}
+\label{e:Delta'}
+\Delta'(\theta) + \frac{(B_1/S_1)'(\theta)}{B_1(\theta)/S_1(\theta)}\,\Delta(\theta) = \gamma(\theta),
+\end{equation}
+where
+\[
+\gamma := \big((\ln B_2)' - (\ln B_1)'\big)(1 - W_2) + \big((\ln S_2)' - (\ln S_1)'\big)W_2.
+\]
+Since $W_2 \in (0,1)$, the elasticity assumptions $\elaB_2 \geq \elaB_1$ and $\elaS_2 \leq \elaS_1$ (equivalently $(\ln B_2)' \geq (\ln B_1)'$ and $(\ln S_2)' \geq (\ln S_1)'$) ensure $\gamma \geq 0$ on $(0,\theta')$.
+
+Multiplying both sides of \eqref{e:Delta'} by $B_1(\theta)/S_1(\theta)$ gives
+\[
+\frac{d}{d\theta}\!\left[\Delta(\theta)\,\frac{B_1(\theta)}{S_1(\theta)}\right] = \gamma(\theta)\,\frac{B_1(\theta)}{S_1(\theta)}.
+\]
+Integrating from $0$ to $\theta'$, we have
+\[
+\Delta(\theta')\,\frac{B_1(\theta')}{S_1(\theta')} - \lim_{t\to 0} \Delta(t)\,\frac{B_1(t)}{S_1(t)} = \int_0^{\theta'} \gamma(t)\,\frac{B_1(t)}{S_1(t)}\,dt.
+\]
+Since $B_1(t)/S_1(t) \to 0$ as $t \to 0$ and $\Delta$ is bounded, the limit term is zero. Therefore,
+\[
+\Delta(\theta') = \frac{S_1(\theta')}{B_1(\theta')} \int_0^{\theta'} \gamma(t)\,\frac{B_1(t)}{S_1(t)}\,dt \geq 0. \qedhere
+\]
+\end{proof}
+
+\begin{comment}
+\begin{proof}[Proof of tightness of the conditions in \autoref{prop:comp_stat}]
+We show that if $\elaB_2(\tilde\theta)<\elaB_1(\tilde\theta)$ at some $\tilde\theta$, there is a common $S$ across the two environments such that $W_2(\theta)<W_1(\theta)$ at some $\theta$; the argument for $\elaS$ is analogous. 
+
+So assume $\elaB_2(\tilde\theta)<\elaB_1(\tilde\theta)$ at some $\tilde\theta$. Since $\elaB_i(\theta)=\theta(\ln B_i)'(\theta)$, we have $(\ln(B_2/B_1))'(\tilde\theta)<0$, and by continuity there exist $\typemin<\theta_1<\theta_2\le\typemax$ such that $B_2/B_1$ is strictly decreasing on $(\theta_1,\theta_2)$. Define \[f_i(\theta):=B_i(\theta)/B_i(\theta_2) \quad \text{and} \quad g:=f_2'-f_1'.\] Since $f_2/f_1$ is strictly decreasing on $(\theta_1,\theta_2)$ with $f_2(\theta_2)=f_1(\theta_2)=1$, we have
+\[
+\int_{\theta_1}^{\theta_2} g(\theta)\,d\theta = f_1(\theta_1)-f_2(\theta_1)<0.
+\]
+Since $g$ is continuous, there is a closed subinterval $I \subset (\theta_1, \theta_2)$ and $\eta > 0$ such that $g \leq -\eta$ on $I$. By \autoref{e:invariance}, for any common strain $S$,
+\[
+W_2(\theta_2)-W_1(\theta_2) = S(\theta_2)\int_\typemin^{\theta_2}\frac{g(\theta)}{S(\theta)}\,d\theta.
+\]
+For any small $\epsilon>0$, choose a strictly decreasing $S_\epsilon$ that agrees with a fixed admissible $S_0$ outside $I$ and satisfies $\epsilon \le S_\epsilon(\theta)\le 2\epsilon$ for all $\theta\in I$. Then
+\[
+\int_\typemin^{\theta_2} \frac{g(\theta)}{S_\epsilon(\theta)}\,d\theta
+=
+\int_{(\typemin,\theta_2]\setminus I} \frac{g(\theta)}{S_0(\theta)}\,d\theta
++
+\int_I \frac{g(\theta)}{S_\epsilon(\theta)}\,d\theta.
+\]
+The first term is independent of $\epsilon$, while the second satisfies
+\[
+\int_I \frac{g(\theta)}{S_\varepsilon(\theta)}\,d\theta \leq \frac{1}{2\varepsilon} \int_I g(\theta)\,d\theta \leq -\frac{\eta\lvert I\rvert}{2\varepsilon} \to -\infty \quad \text{as } \varepsilon \to 0.
+\]
+Hence $W_2(\theta_2)<W_1(\theta_2)$ for $\epsilon>0$ small enough.
+\end{proof}
+\end{comment}
+
+\begin{proof}[Proof of tightness of the conditions in \autoref{prop:comp_stat}]
+We show that if $\elaB_2(\tilde\theta)<\elaB_1(\tilde\theta)$ at some type $\tilde\theta\in(\typemin,\typemax]$, then there exists a common isoelastic strain function $S$ across the two environments such that $W_2(\tilde\theta)<W_1(\tilde\theta)$. The argument for the $\elaS$ condition is analogous.
+
+Consider the family of isoelastic strain functions $S_\sigma(\theta)=\theta^{-\sigma}$ for $\sigma>0$. Evaluating \autoref{e:invariance} at $\tilde\theta$ under $S_\sigma$ gives
+\[
+W_i(\tilde\theta;\sigma)
+=
+\frac{\tilde\theta^{-\sigma}}{B_i(\tilde\theta)}
+\int_{\typemin}^{\tilde\theta} B_i'(
+\theta)\,\theta^\sigma\,d\theta.
+\]
+Multiplying by $\sigma+1$ and changing variables to $\theta=x\tilde\theta$ yields
+\[
+(\sigma+1)W_i(\tilde\theta;\sigma)
+=
+\int_0^1 \frac{\tilde\theta\, B_i'(x\tilde\theta)}{B_i(\tilde\theta)}\,(\sigma+1)x^\sigma\,dx.
+\]
+As $(\sigma+1)x^\sigma$ is a density on $[0,1]$ which converges in distribution to the point mass at $x=1$ as $\sigma\to\infty$, and $B_i'$ is continuous, it follows that
+\[
+\lim_{\sigma\to\infty}(\sigma+1)\,W_i(\tilde\theta;\sigma)
+=
+\frac{\tilde\theta\, B_i'(\tilde\theta)}{B_i(\tilde\theta)}
+=
+\elaB_i(\tilde\theta).
+\]
+Hence, $\elaB_2(\tilde\theta)<\elaB_1(\tilde\theta)$ implies that for sufficiently large $\sigma$ we have $$(\sigma+1)W_2(\tilde\theta;\sigma)<(\sigma+1)W_1(\tilde\theta;\sigma),$$ or equivalently $W_2(\tilde\theta;\sigma)<W_1(\tilde\theta;\sigma)$.
+\end{proof}
+
+\section{Non-Multiplicative Cost Examples}
+\label{sec:countereg}
+
+\subsection{Waste Decreasing in Stakes}
+\label{subsec:waste_decreasing_in_s}
+
+The following example shows that when costs are not multiplicative, there can be a constant waste ratio that decreases with stakes.
+
+\begin{example}
+\label{eg:countereg}
+Let $V(\theta) = s \theta$ for $s>0$, and $C(a,\theta) = a^2/\theta + a^3/\theta^2$. These functions satisfy \autoref{ass:basics} but the cost  is not multiplicatively separable. Moreover, %by contrast to \autoref{e:cre}, we have 
+$$-\frac{\partial \ln C(a,\theta)}{\partial \ln V(\theta)}=\frac{\theta+2a}{\theta+a},$$ which varies with type $\theta$ and action $a$. By contrast, under multiplicative costs that partial derivative is $1 / \tilde{\rho}(\theta)$, independent of the action, and \autoref{thm:char}'s condition requires that it is also independent of type. We show that in this non-multiplicative example the waste ratio depends on stakes $s$, but is nevertheless constant across types.
+
+Let $c(s) > 0$ be the unique solution to 
+\begin{equation}
+\label{e:eg-coefficient}
+2c^2 + 3c^3 = s,
+\end{equation} and consider the strategy $A(\theta) = c(s) \theta$. This linear (hence continuous and differentiable) separating strategy satisfies $A(0) = 0$ and the differential equation \eqref{e:ODE}, because
+\[
+C_a(A(\theta),\theta) A'(\theta) = \left(\frac{2c(s)\theta}{\theta} + \frac{3c(s)^2\theta^2}{\theta^2}\right)c(s) = 2c(s)^2 + 3c(s)^3 = s = V'(\theta),
+\]
+where the penultimate equality is by \eqref{e:eg-coefficient}.
+Hence, by \autoref{prop:sufficiency}, $A$ constitutes a separating equilibrium.
+%Since $C_{a\theta}(a,\theta) = -2a/\theta^2 - 6a^2/\theta^3 < 0$ for $a, \theta > 0$, the conditions of Proposition 2 are satisfied, confirming that $A(\theta) = c\theta$ is a separating equilibrium.
+
+The waste ratio is
+\[
+W(\theta) = \frac{C(A(\theta),\theta)}{V(\theta)} = \frac{c(s)^2 \theta + c(s)^3 \theta}{(2c(s)^2 + 3c(s)^3)\theta} = \frac{1 + c(s)}{2 + 3c(s)},
+\]
+which is constant across types but depends on $s$. In particular, since $c$ is increasing in $s$ (\autoref{e:eg-coefficient}) and $W$ is decreasing in $c$, we see that $W$ is decreasing in $s$ with range %as $s \to 0$, we have $c \to 0$ and $W \to 1/2$; as $s \to \infty$, we have $c \to \infty$ and $W \to 1/3$.
+$(1/3,1/2)$.
+\end{example}
+
+\autoref{eg:countereg} can be generalized to a class of examples with a constant waste that is decreasing in stakes. Building on \autoref{eg:isoelastic}, consider benefits $V(\theta) = s\theta^\beta$ with $s,\beta>0$, and costs that are a combination of isoelastic terms:
+\[
+C(a, \theta) = \sum_{i=1}^n w_i \cdot a^{\gamma_i} \cdot \theta^{-\sigma_i},
+\]
+with $w_i,\gamma_i,\sigma_i > 0$. Assume there is a constant $\alpha>0$ such that the exponents satisfy
+\begin{align}\label{e:sig-gam-ratio}
+\frac{\beta + \sigma_i}{\gamma_i} = \alpha \quad \text{for all } i,
+\end{align}
+and $\gamma_i$ is not constant across $i$.
+Then the separating strategy is $A(\theta) = c(s)\theta^\alpha$, where the coefficient $c(s)$ satisfies
+\[
+\alpha \sum_i w_i \gamma_i c(s)^{\gamma_i} = s\beta.
+\]
+Hence, $c(s)$ is increasing in $s$. 
+Using the above equation, the waste ratio can be computed as
+\[
+\frac{\beta}{\alpha} \cdot \frac{\sum_i w_i c(s)^{\gamma_i}}{\sum_i w_i \gamma_i c(s)^{\gamma_i}},
+\]
+which is decreasing in $c$, and hence decreasing in $s$. Intuitively, higher stakes lead to higher actions, putting more weight on cost terms $a^{\gamma_i}$ with higher $\gamma_i$, which correspondingly have higher $\sigma_i$ (from \eqref{e:sig-gam-ratio}); this magnifies higher types' comparative advantage and lowers waste, akin to the waste ratio decreasing in $\sigma$ in \autoref{thm:constant}.
+
+\subsection{Waste Increasing in Stakes}
+
+Now we provide an example in which there is a constant waste that increases in stakes.
+
+\begin{example}
+\label{eg:countereg2}
+Let $V(\theta)=s\theta$ for $s>0$, and $C(a,\theta)={a^2}/({\theta+a})$. The idea here is that for small $a$ (and hence small stakes) cost is of the order $a^2/\theta$ (giving higher types an advantage), whereas for large $a$ (and hence large stakes) cost is of the order $a$ (which is type independent).
+
+Conjecture a linear separating strategy $A(\theta)=c\theta$ for some constant $c>0$. Since
+\[
+C_a(c\theta,\theta)=\frac{c(2+c)}{(1+c)^2},
+\]
+the differential equation \eqref{e:ODE} reduces to
+\begin{equation}
+\label{e:incstakes-coefficient}
+s=\frac{c^2(2+c)}{(1+c)^2},
+\end{equation}
+which has a unique solution $c>0$ that is increasing in $s$.
+
+Waste is
+\[
+W(\theta)=\frac{C(A(\theta),\theta)}{V(\theta)}
+=\frac{\frac{c^2}{1+c}\theta}{s\theta}
+=\frac{c^2}{s(1+c)}
+=\frac{1+c}{2+c},
+\]
+using \eqref{e:incstakes-coefficient} in the last equality. Thus $W$ is constant across types but increasing in stakes $s$ (since $W$ increases in $c$, and $c$ increases in $s$), with range $(1/2,1)$.
+\end{example}
+
+\autoref{eg:countereg2} can be generalized to a class of examples with a constant waste that is increasing in stakes. Building on \autoref{eg:isoelastic}, consider benefits $V(\theta) = s\theta^\beta$ and costs that are a combination of isoelastic terms: $$C(a,\theta) = \left( \sum_{i=1}^n w_i \cdot a^{-\gamma_i} \cdot \theta^{\sigma_i} \right)^{-1},$$ with $w_i, \gamma_i,\sigma_i > 0$, and assume $(\beta + \sigma_i)/\gamma_i = \alpha$ for all $i$ with $\gamma_i$ not constant across $i$. By a parallel argument to the generalization in \appendixref{subsec:waste_decreasing_in_s}, the separating strategy is $A(\theta) = c(s)\theta^\alpha$ with $c(s)$ increasing in $s$, and the waste ratio is $$\frac{\beta}{\alpha} \cdot \frac{\sum_i w_i c(s)^{-\gamma_i}}{\sum_i w_i \gamma_i c(s)^{-\gamma_i}},$$ which is increasing in $c$ and hence increasing in $s$. %Intuitively, higher stakes lead to higher actions, putting more weight on cost terms with lower $\gamma_i$, which correspondingly have lower $\sigma_i$; this diminishes higher types' comparative advantage and raises waste, akin to the waste ratio increasing when $\sigma$ decreases in \autoref{thm:constant}.
+The intuition mirrors that at the end of \appendixref{subsec:waste_decreasing_in_s}, only now higher stakes put more weight on cost terms with lower $\gamma_i$ and hence lower $\sigma_i$, diminishing higher types' comparative advantage.
+
+\section{The All-pay Auction Equivalence}
+\label{sec:all-pay}
+
+
+Consider the isoelastic environment (with stakes $s=1$, without loss): $$V(\hat \theta)=\hat \theta^\beta \quad \text{and} \quad C(a,\theta)=D(a)\theta^{-\sigma}.$$ For simplicity, assume $\bar \theta=1$; the argument below extends more generally by using a quantile transformation. Define $b(\theta):=D(A(\theta))$ and multiply costs and benefits by $\theta^\sigma$ (which is strategically equivalent) to write the payoff for type $\theta$ choosing to mimic type $\hat \theta$ as
+\begin{equation}
+\label{e:auction}
+\theta^\sigma \hat \theta^\beta  - b(\hat \theta). 
+\end{equation}
+
+This payoff corresponds to that in an all-pay auction. Specifically, consider a symmetric $N$-bidder ($N\geq 2$) independent private value all-pay auction with bidder value $v:=\theta^\sigma$ and type distribution $G(v):=v^\alpha$ on $[0,1]$, where $\alpha:=\beta/(\sigma(N-1))$. Consider a symmetric equilibrium in which each bidder uses a differentiable strictly increasing bidding strategy $\tilde b(v)$ with $\tilde b(0)=0$.  A bidder with true value $v$ who bids to mimic value $\hat v$ wins with probability  $G(\hat v)^{N-1}$ and pays $\tilde b(\hat v)$, and hence has payoff 
+\begin{equation}
+\label{e:auction2}
+v G(\hat v)^{N-1} - \tilde b(\hat v).
+\end{equation}
+When $\tilde b (v)=b(v^{1/\sigma})$, we have $vG(\hat v)^{N-1}=\theta^\sigma (\hat{ \theta}^{\sigma})^ {\alpha (N-1)} = \theta^\sigma \hat{\theta}^\beta$ and $\tilde b(\hat v) = b(\hat \theta)$, and so the payoffs \eqref{e:auction} and \eqref{e:auction2} match. Consequently, the two settings become strategically equivalent, and the usual all-pay equilibrium bidding strategy matches the signaling separating equilibrium strategy.
+
+This means that we can also use auction results to derive the waste ratio \eqref{e:constant}. In the all-pay auction, bids are dissipated. By revenue equivalence, a type-$v$ bidder bids his expected payment in the corresponding second-price auction: the win probability $G(v)^{N-1}$ times the expected second-highest value conditional on winning, $\E \left[\max_{j \ne i} v_j \mid \max_{j \ne i} v_j < v\right]$. Standard order statistics for the power distribution $G(v)=v^\alpha$ yield 
+\[\E \left[\max_{j \ne i} v_j \mid \max_{j \ne i} v_j < v\right] =  v \frac{\alpha (N-1)}{\alpha (N-1) + 1} = v \frac{\beta}{\beta+\sigma}.\]
+Hence, the equilibrium bidding function is $$\tilde b(v) = G(v)^{N-1}  v \frac{\alpha (N-1)}{\alpha (N-1) + 1} = v G(v)^{N-1}    \frac{\beta}{\beta+\sigma}.$$
+A type-$v$ bidder's expected gross value is $v G(v)^{N-1}$, so the dissipation rate is
+\[
+\frac{ v G(v)^{N-1}    \frac{\beta}{\beta+\sigma}
+}{ v G(v)^{N-1}} = \frac{\beta}{\beta+\sigma}.
+\]
+
+
+\newpage
+
+\bibliographystyle{aer}
+\bibliography{FK-dissipation}
+
+\newpage
+
+\begin{center}
+\textbf{{\LARGE \textcolor{DarkRed}{Supplementary Appendix}}}
+\end{center}
+
+\section{Omitted Proofs}
+\label{sec:proof:separating-differentiable}
+
+The following lemma is used in the proof of \autoref{prop:separating-differentiable}.
+
+\begin{lemma}\label{lem:cost-type-zero}
+$C(\cdot, 0)$ is strictly increasing on $\{a \geq 0 : C(a, 0) < \infty\}$.
+\end{lemma}
+
+\begin{proof}
+Since $C(\cdot, \theta)$ is strictly increasing for $\theta > 0$, the limit definition of $C(\cdot, 0)$ implies it is weakly increasing. To establish strict monotonicity, consider $a'' > a' \geq 0$ with $C(a'', 0) < \infty$. For any $\theta > 0$, we have
+\[
+C(a'', \theta) - C(a', \theta) = \int_{a'}^{a''} C_a(x, \theta) \, dx.
+\]
+For any $x > 0$, the function $C_a(x, \cdot)$ is strictly decreasing on $(0,\overline \theta]$ because $C_{a \theta}<0$ on this domain, and so $L(x) := \lim_{\theta \downarrow 0} C_a(x, \theta)$ exists in $\Rstrpos \cup \{\infty\}$. By monotone convergence,
+\[
+C(a'', 0) - C(a', 0) = \int_{a'}^{a''} L(x) \, dx > 0. \qedhere
+\]
+\end{proof}
+
+
+\begin{proof}[Proof of \autoref{prop:separating-differentiable}]
+We proceed in three steps.
+
+\medskip
+\noindent\textsc{Step 1: Any separating equilibrium has a pure strategy.}
+
+Consider any separating equilibrium strategy $\alpha$ and type $\theta$. Incentive compatibility requires  $C(a, \theta) = C(a', \theta)$ for $\alpha(\theta)$-a.e.~$a$ and $a'$, since any such actions induce the same belief $\theta$. By the strict monotonicity of $C(\cdot,\theta)$ for $\theta>0$ and using \autoref{lem:cost-type-zero} for $\theta=0$ (noting that this type will never choose an action with infinite cost), we have $a = a'$ for $\alpha(\theta)$-almost every $a$ and $a'$, which implies $\alpha(\theta)$ has singleton support. Hence $\alpha$ is a pure strategy.
+
+\medskip
+\noindent\textsc{Step 2: The boundary condition $A(0) = 0$.}
+
+Let $A$ be a separating equilibrium (pure) strategy. If $A(\typemin)>0$, then $V(\typemin)-C(A(\typemin),\typemin)<V(\typemin)-C(0,\typemin)$, contradicting incentive compatibility (IC) for type $\typemin$.
+
+\medskip
+\noindent\textsc{Step 3: Continuity, differentiability, and monotonicity.}
+
+Let $A$ be a separating equilibrium (pure) strategy. We first show $A$ is continuous. Consider any $\theta^*\in (0,\typemax)$ and let $a^- := \lim_{\theta \uparrow \theta^*} A(\theta)$ and $a^+ := \lim_{\theta \downarrow \theta^*} A(\theta)$ (passing to subsequences if necessary, noting that $A$ is bounded on compact subsets by IC). IC for type $\theta^*$ implies that for all $\theta<\theta^*$, we have
+\[
+V(\theta^*) - C(A(\theta^*), \theta^*) \geq V(\theta) - C(A(\theta), \theta^*).
+\]
+Taking $\theta \uparrow \theta^*$ and using continuity of $V$ and $C$ yields
+\begin{equation}
+\label{e:continuity-IC1}
+V(\theta^*) - C(A(\theta^*), \theta^*) \geq V(\theta^*) - C(a^-, \theta^*).    
+\end{equation}
+Applying IC in the reverse direction (for a type $\theta<\theta^*$ to not mimic $\theta^*$) and taking the same limit yields the opposite inequality to \eqref{e:continuity-IC1}. Hence $C(A(\theta^*), \theta^*) = C(a^-, \theta^*)$. An analogous argument using types above $\theta^*$ gives $C(A(\theta^*), \theta^*) = C(a^+, \theta^*)$. Since $C(\cdot, \theta^*)$ is strictly increasing, this implies $a^- = A(\theta^*) = a^+$, so $A$ is continuous at $\theta^*$. The same argument, but using only $a^-$ or $a^+$ as applicable, also establishes continuity when $\theta^*\in \{\typemin,\bar \theta\}$.
+
+
+We now establish differentiability. Fix $\theta > \typemin$ and $\theta' \neq \theta$. Adding the IC inequalities for $\theta$ to not mimic $\theta'$ and vice-versa, and rearranging, yields
+\begin{equation}
+\label{e:differentiability}
+C(A(\theta'), \theta) - C(A(\theta), \theta) \geq V(\theta') - V(\theta) \geq C(A(\theta'), \theta') - C(A(\theta), \theta').
+\end{equation}
+Since $C$ is differentiable in its first argument, the mean value theorem implies that the left-hand side of \eqref{e:differentiability} equals $C_a(\tilde{a}, \theta) \cdot (A(\theta') - A(\theta))$ for some $\tilde{a}$ between $A(\theta)$ and $A(\theta')$, and analogously for the right-hand side with $C_a(\tilde{a}', \theta')$ for some $\tilde{a}'$ between $A(\theta)$ and $A(\theta')$. Substituting into \eqref{e:differentiability} and dividing by $\theta' - \theta$ gives
+\begin{equation}
+\label{e:differentiability-2}
+C_a(\tilde{a}, \theta) \left( \frac{A(\theta') - A(\theta)}{\theta' - \theta}\right) \geq \frac{V(\theta') - V(\theta)}{\theta' - \theta} \geq C_a(\tilde{a}', \theta') \left(\frac{A(\theta') - A(\theta)}{\theta' - \theta}\right),    
+\end{equation}
+where the inequalities are written for $\theta'>\theta$ and would flip if $\theta' < \theta$. Either way, take $\theta' \to \theta$: since $\tilde{a}, \tilde{a}' \to A(\theta)$ by continuity of $A$, and $C_a$ is continuous, both $C_a(\tilde{a}, \theta)$ and $C_a(\tilde{a}', \theta')$ converge to $C_a(A(\theta), \theta) > 0$. Since the middle term of \eqref{e:differentiability-2} converges to $V'(\theta)$ and the two outer terms share the common factor $\frac{A(\theta') - A(\theta)}{\theta' - \theta}$ with coefficients converging to the same positive limit, we conclude that $A'(\theta)$ exists with
+\[
+A'(\theta) = \frac{V'(\theta)}{C_a(A(\theta), \theta)}.
+\]
+Note that if $V'$ is continuous on $(\typemin,\typemax\rangle$, then $A'$ is continuous on that domain because $C_a$ and $A$ are all continuous on that domain and $C_a(A(\theta), \theta) > 0$ for $\theta>0$ (noting that $A(\theta)>0$ for $\theta>\typemin$ by separation).
+
+Finally, since we have established $A'(\theta)> 0$ for $\theta>0$ and that $A$ is continuous, it follows that $A$ is strictly increasing on $[\typemin, \typemax\rangle$.
+\end{proof}
+
+\begin{proof}[Proof of \autoref{prop:sufficiency}]
+    Let $A$ have the stated properties. Note that for $\theta>\typemin$, if $A(\theta)=0$ then $C_a(0,\theta)>0$: the derivative must exist and be nonzero to satisfy \eqref{e:ODE}, as $V'(\theta)>0$, and the derivative cannot be negative because $C(\cdot,\theta)$ is continuous and $C_a(a,\theta)>0$ for $a>0$. Using \autoref{ass:basics}, it follows that for $\theta>0$, no matter the value of $A(\theta)$, both $V'(\theta)>0$ and $C_a(A(\theta),\theta)>0$, and hence \eqref{e:ODE} implies $A'(\theta)>0$. By continuity of $A$, it is strictly increasing on $[\typemin,\typemax\rangle$. Moreover, $A$ is twice differentiable on $(\typemin, \typemax\rangle$ since the right-hand side of \eqref{e:ODE} is differentiable in $\theta$ (because \autoref{ass:basics} entails $V$ twice differentiable and $C_a$ differentiable on the relevant domain).
+
+    We now verify that $A$ defines a separating equilibrium. Since any off-path action is met with belief $\hat \theta=0$, it is strictly worse than action $0$. So any type $\theta$ can be viewed as only choosing which type $\tilde{\theta}$ to mimic, with payoff 
+\[
+\Pi(\theta, \tilde{\theta}) := V(\tilde{\theta}) - C(A(\tilde{\theta}), \theta).
+\]
+For any $\theta>0$, the first order-condition obviously holds, since $A$ solves \eqref{e:ODE}. Let us verify the second-order condition. Using numeric subscripts for partial derivatives of $\Pi$ in the usual way, and restricting attention to the domain $\theta>\typemin$, we have
+\begin{equation}
+\label{e:SOC1}
+\Pi_{22}(\theta,\tilde \theta) = V''(\tilde{\theta}) - C_{aa}(A(\tilde{\theta}), \theta) \cdot (A'(\tilde{\theta}))^2 - C_a(A(\tilde{\theta}), \theta) \cdot A''(\tilde{\theta}).    
+\end{equation}
+Totally differentiating \eqref{e:ODE} with respect to $\theta$ yields
+\begin{equation}
+\label{e:SOC2}
+V''(\theta) = C_{aa}(A(\theta), \theta) \cdot (A'(\theta))^2 + C_{a \theta}(A(\theta), \theta) \cdot A'(\theta) + C_a(A(\theta), \theta) \cdot A''(\theta).    
+\end{equation}
+Substituting from \eqref{e:SOC2} into \eqref{e:SOC1} and then evaluating at $\tilde \theta=\theta$ yields
+\[
+\Pi_{22}(\theta,\theta) = C_{a \theta}(A(\theta), \theta) \cdot A'(\theta) < 0,
+\]
+where the inequality follows from $A'(\theta) > 0$ and, by \autoref{ass:basics}, $C_{a \theta} < 0$ on $\Rstrpos\times (\typemin,\typemax\rangle$. This verifies the second-order condition and hence local optimality for each type $\theta > \typemin$. It follows from the single-crossing assumption $C_{a \theta} < 0$ that (global) incentive compatibility holds on the domain $(\typemin,\typemax\rangle$, i.e., for any pair of types in this domain, neither wants to mimic the other.
+
+Finally, we address type $0$. Consider an arbitrary other type $\theta>0$. We must show $\Pi(\theta, \theta) \geq \Pi(\theta, 0)$ and $\Pi(0, 0)\geq \Pi(0,\theta)$. Taking each in turn: 
+\begin{enumerate}
+\item Incentive compatibility on $(\typemin,\typemax\rangle$ implies $\Pi(\theta, \theta) \geq \Pi(\theta, \tilde{\theta})$ for all $\tilde{\theta} > 0$, while continuity of $V$, $A$ and $C(\cdot,\theta)$ imply $\Pi(\theta, \tilde{\theta}) \to \Pi(\theta, 0)$ as $\tilde{\theta} \to 0$ . Hence, $\Pi(\theta, \theta) \geq \Pi(\theta, 0)$.
+\item For any $\tilde \theta>0$, the previous point implies  $\Pi(\tilde{\theta}, \tilde{\theta}) \geq \Pi(\tilde{\theta}, 0)=0$, and hence $0\leq C(A(\tilde{\theta}), \tilde{\theta}) \leq V(\tilde{\theta})$. Since  $V(\tilde \theta) \rightarrow 0$ as $\tilde{\theta} \rightarrow 0$, it follows that $\Pi(\tilde{\theta}, \tilde{\theta}) \rightarrow 0=\Pi(0,0)$. Moreover, for any $\tilde{\theta}>0$ we have $\Pi(\tilde{\theta}, \tilde{\theta}) \geq \Pi(\tilde{\theta}, \theta)$ by incentive compatibility on $(\typemin,\typemax\rangle$, and $\Pi(\tilde{\theta}, \theta) \rightarrow \Pi(0, \theta)$ by the limit property of $C(\cdot, 0)$ in \autoref{ass:basics}. Hence $\Pi(0,0) \geq \Pi(0,\theta)$.  \qedhere
+\end{enumerate}
+\end{proof}
+\end{document}
